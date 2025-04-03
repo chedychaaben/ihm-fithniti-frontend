@@ -23,7 +23,7 @@ const Profile = () => {
 
   const [rideDeleteMode, setRideDeleteMode] = useState(false)
   const [editMode, setEditMode] = useState(false)
-  const {loading, data, refetch} = useFetch(`users/${user.user._id}`, true)
+  const {loading, data, refetch} = useFetch(`users/${user.user.id}`, true)
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -34,7 +34,7 @@ const Profile = () => {
 
   const onSubmit = async (newData) => {
     try {
-      await axios.patch(`${apiUri}/users/${user.user._id}`, {
+      await axios.patch(`${apiUri}/users/${user.user.id}`, {
         name: newData.name,
         profile: {...data.profile, bio: newData.bio}
       }, {withCredentials:true});
@@ -144,9 +144,9 @@ const Profile = () => {
           </div>
           <ScrollArea className="h-[275px] w-full rounded-md border p-4">
             {data?.ridesCreated.map(ride => 
-              <Fragment key={ride._id} >
+              <Fragment key={ride.id} >
               <RideCard details={ride} />
-              { rideDeleteMode && <Trash className="text-destructive cursor-pointer" onClick={()=> handleDelete(ride._id)} />}
+              { rideDeleteMode && <Trash className="text-destructive cursor-pointer" onClick={()=> handleDelete(ride.id)} />}
               </Fragment>
             )}
           </ScrollArea>
@@ -159,7 +159,7 @@ const Profile = () => {
               ? <h3>No rides</h3>
               :
               data?.ridesJoined.map(ride => 
-              <RideCard key={ride._id} details={ride} />
+              <RideCard key={ride.id} details={ride} />
             )}
           </ScrollArea>
         </div>
