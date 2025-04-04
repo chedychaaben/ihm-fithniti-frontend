@@ -106,7 +106,7 @@ const Profile = () => {
                 <h3 className="text-base font-semibold leading-4 text-center md:text-left">About</h3>
                 <p className="text-sm text-muted-foreground">Bio: {data?.profile.bio}</p>
                 <p className="text-sm text-muted-foreground">{data?.age && `${data?.age} y/o`}</p>
-                <p className="text-sm text-muted-foreground">{data?.ridesCreated.length} Rides published</p>
+                <p className="text-sm text-muted-foreground">{data?.ridesCreated?.length} Rides published</p>
                 <p className="text-sm text-muted-foreground">Member since {data?.createdAt.substring(0,4)}</p>
               </div>
               <div className="flex justify-center items-start flex-col space-y-4 mt-8">
@@ -143,7 +143,7 @@ const Profile = () => {
             <Pencil className={`cursor-pointer p-1 rounded-lg ${rideDeleteMode && 'bg-primary text-primary-foreground'} `} size={25} onClick={() => setRideDeleteMode(!rideDeleteMode)} />
           </div>
           <ScrollArea className="h-[275px] w-full rounded-md border p-4">
-            {data?.ridesCreated.map(ride => 
+            {data?.ridesCreated?.map(ride => 
               <Fragment key={ride.id} >
               <RideCard details={ride} />
               { rideDeleteMode && <Trash className="text-destructive cursor-pointer" onClick={()=> handleDelete(ride.id)} />}
