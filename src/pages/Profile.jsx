@@ -93,7 +93,7 @@ const Profile = () => {
               </DropdownMenu>
               <div className="flex justify-center items-start flex-col space-y-2">
                 <p className="text-base font-semibold leading-4 text-left">{data?.name}</p>
-                <div className="flex items-center text-sm gap-1 text-muted-foreground"><Star fill="yellow" size={20} className="text-transparent" /> {data?.stars} - {data?.ratings.length} ratings</div>
+                <div className="flex items-center text-sm gap-1 text-muted-foreground"><Star fill="yellow" size={20} className="text-transparent" /> {data?.stars} - {data?.ratings?.length} ratings</div>
               </div>
               </>
             }
@@ -104,16 +104,16 @@ const Profile = () => {
               <Button variant='outline' onClick={() => setEditMode(true)} >Edit Profile</Button>
               <div className="flex justify-center items-start flex-col space-y-4 mt-8">
                 <h3 className="text-base font-semibold leading-4 text-center md:text-left">About</h3>
-                <p className="text-sm text-muted-foreground">Bio: {data?.profile.bio}</p>
+                <p className="text-sm text-muted-foreground">Bio: {data?.profile?.bio}</p>
                 <p className="text-sm text-muted-foreground">{data?.age && `${data?.age} y/o`}</p>
                 <p className="text-sm text-muted-foreground">{data?.ridesCreated?.length} Rides published</p>
                 <p className="text-sm text-muted-foreground">Member since {data?.createdAt.substring(0,4)}</p>
               </div>
               <div className="flex justify-center items-start flex-col space-y-4 mt-8">
                 <h3 className="text-base font-semibold leading-4 text-center md:text-left">Preferences</h3>
-                <p className="text-sm text-muted-foreground">{data?.profile.preferences?.music}</p>
-                <p className="text-sm text-muted-foreground">{data?.profile.preferences?.smoking}</p>
-                <p className="text-sm text-muted-foreground">{data?.profile.preferences?.petFriendly}</p>
+                <p className="text-sm text-muted-foreground">{data?.profile?.preferences?.music}</p>
+                <p className="text-sm text-muted-foreground">{data?.profile?.preferences?.smoking}</p>
+                <p className="text-sm text-muted-foreground">{data?.profile?.preferences?.petFriendly}</p>
               </div>
             </>
             :
@@ -155,10 +155,10 @@ const Profile = () => {
             <h1 className="text-xl font-semibold">Recently joined rides</h1>
           </div>
           <ScrollArea className="h-[275px] w-full rounded-md border p-4">
-            {data?.ridesJoined.length === 0
+            {data?.ridesJoined?.length === 0
               ? <h3>No rides</h3>
               :
-              data?.ridesJoined.map(ride => 
+              data?.ridesJoined?.map(ride => 
               <RideCard key={ride.id} details={ride} />
             )}
           </ScrollArea>
