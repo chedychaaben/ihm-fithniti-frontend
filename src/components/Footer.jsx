@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2">
           <h1 className="text-xl font-bold text-primary">
-            RideShare
+            FiTheniti
           </h1>
           <div className="mt-6 lg:max-w-sm">
             <p className="text-sm text-foreground">
@@ -23,7 +23,7 @@ const Footer = () => {
               aria-label="Our phone"
               title="Our phone"
             >
-              850-123-5021
+              (+216) 74 123 456 
             </a>
           </div>
           <div className="flex">
@@ -33,7 +33,7 @@ const Footer = () => {
               aria-label="Our email"
               title="Our email"
             >
-              rideshare@gmail.com
+              info@fitheniti.com
             </a>
           </div>
           <div className="flex">
@@ -45,7 +45,7 @@ const Footer = () => {
               aria-label="Our address"
               title="Our address"
             >
-              India
+              Technopole Sfax , Sfax , Tunisia 
             </a>
           </div>
         </div>
@@ -60,7 +60,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
-        <p className="text-sm">&copy; Copyright 2024 RideShare.com | All rights reserved.</p>
+        <p className="text-sm">&copy; Copyright 2025 fitheniti.com | All rights reserved.</p>
         <ul className="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
           <li><a href="/" className="text-sm">F.A.Q</a></li>
           <li><a href="/" className="text-sm">Privacy Policy</a></li>

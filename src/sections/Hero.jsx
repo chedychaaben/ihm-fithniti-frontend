@@ -7,7 +7,7 @@ const Hero = () => {
       <div className="h-full">
         <img src={bg} className="h-full" alt="hero" />
       </div>
-      <h1 className="text-2xl text-center sm:text-4xl md:text-5xl absolute text-primary font-extrabold">Your pick of rides at low price</h1>
+      <h1 className="text-2xl text-center sm:text-4xl md:text-5xl absolute text-primary font-extrabold">.</h1>
       <div className="absolute z-10 -bottom-24 w-full px-10 sm:w-fit sm:-bottom-8">
         <Search />
       </div>

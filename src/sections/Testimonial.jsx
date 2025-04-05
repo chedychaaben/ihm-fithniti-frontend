@@ -3,22 +3,40 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar"
 const Testimonial = () => {
   const feedback = [
     {
-      desc: "RideShare made my daily commute a breeze! The app is user-friendly, and I've most some wonderfuli people through carpooling. Thank you RideShare for providing such a fantastic service.",
+      desc: "**FiTheniti revolutionized** my daily commute! *The intuitive app design* makes carpooling effortless.\n\nI've connected with amazing people while reducing my carbon footprint. 10/10 would recommend!",
       img: "https://dummyimage.com/106x106",
-      user: "John",
-      prof: "UI Developer"
+      user: "Mohamed Ali",
+      prof: "Content Creator"
     },
     {
-      desc: "Ever since I started using RideShare, my daily commute has transformed into a seamless and enjoyable experience. The convenience and reliability of this app have truly exceeded my expectations. The user-friendly interface makes booking a ride a breeze.",
+      desc: "What *truly sets FiTheniti apart* is their **unmatched reliability**.\n\nMy morning stress disappeared when I could count on punctual rides every single day. Plus, the drivers are consistently friendly!",
       img: "https://dummyimage.com/106x106",
-      user: "Murphy",
+      user: "Mouna Gesmi",
+      prof: "Social Media Manager"
+    },
+    {
+      desc: "As a developer, I appreciate FiTheniti's **flawless technical execution**.\n\n*Real-time tracking* works perfectly, and I've never experienced app crashes. The clean UI makes every ride enjoyable!",
+      img: "https://dummyimage.com/106x106",
+      user: "Saleh Bouazizi",
       prof: "Backend Developer"
     },
     {
-      desc: "I just had to share my recent experience with RideShare because it has truly been a game-changer for me! From the easy sign-up process to the consistently reliable service, this app has quickly become my go-to for hassle-free transportation.",
+      desc: "**Safety first!** FiTheniti's *verified driver system* gave me peace of mind.\n\nNight rides feel secure, and the emergency button adds an extra layer of protection. Brilliant service!",
       img: "https://dummyimage.com/106x106",
-      user: "Murphy",
-      prof: "Backend Developer"
+      user: "Lina Ben Ammar",
+      prof: "Graphic Designer"
+    },
+    {
+      desc: "The *cost savings* with FiTheniti are **substantial**!\n\nI've cut my transportation expenses by 60% while meeting interesting professionals during shared rides. Win-win!",
+      img: "https://dummyimage.com/106x106",
+      user: "Omar Trabelsi",
+      prof: "Financial Analyst"
+    },
+    {
+      desc: "🚀 *Next-level convenience!* FiTheniti's **AI-powered matching** finds perfect routes.\n\nAs a busy parent, the 'School Run' feature saves me 2+ hours weekly. *Life-changing* app!",
+      img: "https://dummyimage.com/106x106",
+      user: "Amira Chennoufi",
+      prof: "Pediatric Nurse"
     }
   ]
   return (
