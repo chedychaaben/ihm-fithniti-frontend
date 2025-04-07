@@ -31,7 +31,7 @@ const Header = () => {
         <h1 className="font-bold text-xl text-primary hidden sm:block">FiTheniti</h1>
       </NavLink>
       <nav className="ml-auto flex items-center text-base justify-center">
-        <NavLink to="/search" className="flex items-center gap-2 mr-5 hover:text-primary"><Search className="h-4 w-4" /><Search className="h-4 w-4" />Search</NavLink>
+        <NavLink to="/search" className="flex items-center gap-2 mr-5 hover:text-primary"><Search className="h-4 w-4" />Search</NavLink>
         <NavLink to="/offer-seat" className="flex items-center gap-2 mr-5 hover:text-primary"> <PlusCircle className="h-4 w-4"/> Publish a ride</NavLink>
       </nav>
       {!user ?
