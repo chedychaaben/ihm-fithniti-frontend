@@ -6,7 +6,6 @@ import { Search, PlusCircle, LogOut, User } from "lucide-react";
 import LoginSignupDialog from "./LoginSignupDialog";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
-import axios from "axios";
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 
@@ -14,14 +13,11 @@ const Header = () => {
   const {user, dispatch} = useContext(AuthContext)
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try{
-      await axios.get(`${apiUri}/auth/logout`, {withCredentials: true});
-      dispatch({ type: 'LOGOUT' });
-      navigate("/");
-    }catch(err){
-      console.log(err)
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+  
+    dispatch({ type: 'LOGOUT' });
+    navigate("/");
   };
 
   return (
