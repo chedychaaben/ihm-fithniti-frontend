@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem } from "./ui/form"
 import { CalendarIcon, MapPin, Minus, Plus, User } from "lucide-react"
 import { Input } from "./ui/input"
 import { useSearchParams } from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
 
 const searchSchema = z.object({
   from: z.string(),
@@ -20,6 +20,7 @@ const searchSchema = z.object({
 })
 
 const Search = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams({from:"",to:"",seat:"",date:""})
 
   const form = useForm({
@@ -34,7 +35,8 @@ const Search = () => {
 
   const onSubmit = async (data) => {
     await form.handleSubmit((formData) => {
-      setSearchParams(formData, {replace: true});
+      const query = new URLSearchParams(formData).toString();
+      navigate(`/search?${query}`);
     })(data);
   };
 
