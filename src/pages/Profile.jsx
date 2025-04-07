@@ -11,14 +11,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { AuthContext } from "@/context/AuthContext"
 import useFetch from "@/hooks/useFetch"
 import axios from "axios"
-import { Pencil, Star, Trash } from "lucide-react"
+import { Pencil, Star, Trash, ArrowLeft } from "lucide-react"
 import { Fragment, useContext, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate, NavLink } from "react-router-dom"
 import { toast } from "sonner"
+
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const Profile = () => {
+  const navigate = useNavigate();
   const {user} = useContext(AuthContext)
 
   const [rideDeleteMode, setRideDeleteMode] = useState(false)
@@ -55,11 +57,17 @@ const Profile = () => {
       console.error('Error deleting item:', error);
     }
   }
-
+  const GoBackButton = () => {
+    navigate(-1);
+  };
   if(!user) return <Navigate to="/" replace />;
 
   return (
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+      <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
+        <ArrowLeft className="h-4 w-4" />
+          Retour
+      </NavLink>
       <div className="flex flex-col sm:flex-row h-full w-full">
         <div className="w-full sm:w-96 flex p-0 py-6 md:p-6 xl:p-8 flex-col">
           <div className="relative flex w-full space-x-4 my-8">

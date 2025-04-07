@@ -1,6 +1,9 @@
 import PublishCard from "@/components/PublishCard"
+import { ArrowLeft } from "lucide-react";
+import { useNavigate, NavLink } from "react-router-dom"
 
 const OfferSeat = () => {
+  const navigate = useNavigate();
   const steps = [
     {
       step: 1,
@@ -18,8 +21,15 @@ const OfferSeat = () => {
       description: "That's how easy it is to start saving on travel costs!"
     },
   ]
+  const GoBackButton = () => {
+    navigate(-1);
+  };
   return (
     <section>
+      <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
+        <ArrowLeft className="h-4 w-4" />
+          Retour
+      </NavLink>
       <h1 className="text-3xl text-center p-5 font-bold"> <span className="text-primary"> Publish </span> a <span className="text-primary"> Ride </span> in Just <span className="text-primary">Minutes</span></h1>
       <div className="container pt-6 max-w-screen-xl pb-16 mx-auto md:justify-center flex flex-col md:flex-row items-center lg:items-start ">
         <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
