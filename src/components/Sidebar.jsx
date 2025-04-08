@@ -7,9 +7,9 @@ import { Checkbox } from './ui/checkbox'
 const Sidebar = () => {
   const [sortOption, setSortOption] = useState('Earliest departure')
   const [departureOptions, setDepartureOptions] = useState({
-    departure_before_six_am: true,
+    departure_before_six_am: false,
     departure_six_to_noon: false,
-    departure_noon_to_six: true,
+    departure_noon_to_six: false,
   })
   const [otherOptions, setOtherOptions] = useState({
     'max-passengers': false,
