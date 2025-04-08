@@ -11,6 +11,13 @@ import { CalendarIcon, MapPin, Minus, Plus, User } from "lucide-react"
 import { Input } from "./ui/input"
 import { useSearchParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const searchSchema = z.object({
   from: z.string(),
@@ -40,6 +47,34 @@ const Search = () => {
     })(data);
   };
 
+  const destinations = [
+    "Ariana",
+    "Ben Arous",
+    "Bizerte",
+    "Béja",
+    "Gabès",
+    "Gafsa",
+    "Jendouba",
+    "Kairouan",
+    "Kasserine",
+    "Kebili",
+    "Kef",
+    "Mahdia",
+    "Manouba",
+    "Medenine",
+    "Monastir",
+    "Nabeul",
+    "Sfax",
+    "Sidi Bouzid",
+    "Siliana",
+    "Sousse",
+    "Tataouine",
+    "Tozeur",
+    "Tunis",
+    "Zaghouan",
+  ];
+  
+
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="flex flex-col gap-1 sm:flex-row w-full sm:w-fit divide-y sm:divide-y-0 sm:divide-x bg-background border p-3 rounded-lg">
@@ -48,10 +83,21 @@ const Search = () => {
             control={form.control}
             name="from"
             render={({ field }) => (
-              <FormItem className="flex items-center space-y-0">
-                <MapPin className="opacity-50" />
+              <FormItem className="flex items-center space-y-0 w-full md:w-[400px]">
+                <MapPin className="opacity-50 sm:ml-2" />
                 <FormControl>
-                  <Input placeholder="From" className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none  px-1"  {...field} />
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1">
+                      <SelectValue className="text-gray-400" placeholder="From" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {destinations.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
               </FormItem>
             )}
@@ -62,10 +108,21 @@ const Search = () => {
             control={form.control}
             name="to"
             render={({ field }) => (
-              <FormItem className="flex items-center space-y-0">
+              <FormItem className="flex items-center space-y-0 w-full md:w-[400px]">
                 <MapPin className="opacity-50 sm:ml-2" />
                 <FormControl>
-                  <Input placeholder="To" className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1" {...field} />
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1">
+                      <SelectValue className="text-gray-400" placeholder="To" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {destinations.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
               </FormItem>
             )}
