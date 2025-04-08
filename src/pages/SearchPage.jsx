@@ -6,7 +6,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import useFetch from '@/hooks/useFetch';
 import { MoveRight, SlidersHorizontal } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import Footer from '@/components/Footer'
 
+<Footer />
 const SearchPage = () => {
   const { search } = useLocation();
   const { from, to, date, seat } = Object.fromEntries(new URLSearchParams(search));
@@ -14,6 +16,7 @@ const SearchPage = () => {
   const { loading, data } = useFetch(`rides/find?from=${from}&to=${to}&seat=${seat}&date=${date}`);
 
   return (
+    <>
     <main>
       <div className="z-10 flex justify-center items-center border-b bg-background p-8">
         <Search />
@@ -61,6 +64,8 @@ const SearchPage = () => {
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   );
 };
 

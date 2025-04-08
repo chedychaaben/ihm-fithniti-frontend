@@ -68,7 +68,7 @@ const Profile = () => {
         <ArrowLeft className="h-4 w-4" />
           Retour
       </NavLink>
-      <div className="flex flex-col sm:flex-row h-full w-full">
+      <div className="flex flex-col sm:flex-row h-full w-full justify-center items-center">
         <div className="w-full sm:w-96 flex p-0 py-6 md:p-6 xl:p-8 flex-col">
           <div className="relative flex w-full space-x-4 my-8">
             {loading?
@@ -145,33 +145,6 @@ const Profile = () => {
           }
         </div>
       
-        <div className="flex flex-col justify-start items-start gap-2 w-full sm:w-2/3">
-          <div className="flex justify-between items-center w-full">
-            <h1 className="text-xl font-semibold">Published Rides</h1>
-            <Pencil className={`cursor-pointer p-1 rounded-lg ${rideDeleteMode && 'bg-primary text-primary-foreground'} `} size={25} onClick={() => setRideDeleteMode(!rideDeleteMode)} />
-          </div>
-          <ScrollArea className="h-[275px] w-full rounded-md border p-4">
-            {data?.ridesCreated?.map(ride => 
-              <Fragment key={ride._id} >
-              <RideCard details={ride} />
-              { rideDeleteMode && <Trash className="text-destructive cursor-pointer" onClick={()=> handleDelete(ride._id)} />}
-              </Fragment>
-            )}
-          </ScrollArea>
-
-          <div className="flex mt-5 justify-between items-center w-full">
-            <h1 className="text-xl font-semibold">Recently joined rides</h1>
-          </div>
-          <ScrollArea className="h-[275px] w-full rounded-md border p-4">
-            {data?.ridesJoined?.length === 0
-              ? <h3>No rides</h3>
-              :
-              data?.ridesJoined?.map(ride => 
-              <RideCard key={ride._id} details={ride} />
-            )}
-          </ScrollArea>
-        </div>
-        
       </div>
       <Toaster />
     </main>

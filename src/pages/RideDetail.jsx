@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom"
 import { toast } from "sonner"
 import { format, formatDistance } from "date-fns";
 import axios from "axios"
+import Footer from '@/components/Footer'
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
@@ -36,6 +37,7 @@ const RideDetail = () => {
   }
 
   return (
+    <>
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <div className="flex flex-col gap-8 md:flex-row jusitfy-center w-full">
         <div className="flex flex-col justify-start items-start gap-2 w-full">
@@ -62,8 +64,10 @@ const RideDetail = () => {
             <p className="text-base">Seats: {data?.availableSeats}</p>
           </div>
           <div className="w-full py-3 border-t">
-            <p className="text-base">Total Price for 1 Passenger: ₹{data?.price}</p>
+            <p className="text-base">Total Price for 1 Passenger: {data?.price} TND</p>
           </div>
+          
+          <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button>Book Ride</Button>
@@ -81,6 +85,10 @@ const RideDetail = () => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+
+          
+          <Button variant="transparent">Cancel Ride</Button>
+          </div>
         </div>
         <div className="w-full sm:w-96 flex p-0 py-6 md:p-6 xl:p-8 flex-col">
           <h3 className="text-xl font-semibold leading-5">Rider Details</h3>
@@ -113,6 +121,8 @@ const RideDetail = () => {
       </div>
       <Toaster />
     </main>
+    <Footer />
+    </>
   );
 };
 

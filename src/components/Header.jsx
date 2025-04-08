@@ -2,7 +2,7 @@ import logo from "../assets/logo.svg"
 import { Link, NavLink, useNavigate,  } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage  } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Search, PlusCircle, LogOut, User } from "lucide-react";
+import { Search, PlusCircle, LogOut, User, Car, History } from "lucide-react";
 import LoginSignupDialog from "./LoginSignupDialog";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
@@ -28,6 +28,8 @@ const Header = () => {
       </NavLink>
       <nav className="ml-auto flex items-center text-base justify-center">
         <NavLink to="/search" className="flex items-center gap-2 mr-5 hover:text-primary"><Search className="h-4 w-4" />Search</NavLink>
+        <NavLink to="/published-rides" className="flex items-center gap-2 mr-5 hover:text-primary"> <Car className="h-4 w-4"/>Published Rides</NavLink>
+        <NavLink to="/booked-rides" className="flex items-center gap-2 mr-5 hover:text-primary"> <History className="h-4 w-4"/>Booked Rides</NavLink>
         <NavLink to="/offer-seat" className="flex items-center gap-2 mr-5 hover:text-primary"> <PlusCircle className="h-4 w-4"/> Publish a ride</NavLink>
       </nav>
       {!user ?
@@ -47,7 +49,8 @@ const Header = () => {
               <Link to="/profile" className="flex">
                 <User className="mr-2 h-4 w-4"/><span>Profile</span>
               </Link>
-              </DropdownMenuItem>
+            </DropdownMenuItem>
+              
             <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/><span>Log Out</span></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

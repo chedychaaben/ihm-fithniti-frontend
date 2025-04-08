@@ -1,4 +1,4 @@
-import { IndianRupee, Clock, Hourglass } from 'lucide-react'
+import { Coins, Clock, Hourglass } from 'lucide-react'
 import { Label } from './ui/label'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 import { Checkbox } from './ui/checkbox'
@@ -6,12 +6,8 @@ import { Checkbox } from './ui/checkbox'
 const Sidebar = () => {
   const sortBy = [
     { 
-      icon: <IndianRupee size={16} />,
-      title: "Earliest Departure", 
-    },
-    {
-      icon: <Clock size={16} />,
-      title: "Price"
+      icon: <Coins  size={16} />,
+      title: "Price", 
     },
     {
       icon: <Hourglass size={16} />,
