@@ -5,14 +5,14 @@ import { Checkbox } from './ui/checkbox'
 
 const Sidebar = () => {
   const sortBy = [
-    { 
-      icon: <Coins  size={16} />,
-      title: "Price", 
-    },
     {
       icon: <Hourglass size={16} />,
-      title: "Shortest ride"
+      title: "Earliest departure"
     },
+    { 
+      icon: <Coins  size={16} />,
+      title: "Lowest price", 
+    }
   ]
   const departureTime= [
     {
@@ -56,6 +56,32 @@ const Sidebar = () => {
           </Label>
         )}
       </div>
+
+      <div className="px-3 py-2">
+        <h2 className="mb-2 px-4 text-lg font-semibold">Autre</h2>
+        
+        <Label key="max-passengers" htmlFor="max-passengers" aria-label="Max passengers" className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
+          Max. 2 passengers in the back
+          <Checkbox name="max-passengers" id="max-passengers" />
+        </Label>
+        
+        <Label key="smoking-allowed" htmlFor="smoking-allowed" aria-label="Smoking allowed" className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
+          Smoking allowed
+          <Checkbox name="smoking-allowed" id="smoking-allowed" />
+        </Label>
+        
+        <Label key="pets-allowed" htmlFor="pets-allowed" aria-label="Pets allowed" className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
+          Pets allowed
+          <Checkbox name="pets-allowed" id="pets-allowed" />
+        </Label>
+        
+        <Label key="air-conditioning" htmlFor="air-conditioning" aria-label="Air conditioning" className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
+          Air conditioning
+          <Checkbox name="air-conditioning" id="air-conditioning" />
+        </Label>
+        
+      </div>
+
     </aside>
   )
 }
