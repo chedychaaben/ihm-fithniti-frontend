@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Toaster } from "@/components/ui/sonner"
 import useFetch from "@/hooks/useFetch"
-import { MoveDown, MoveRight, Star } from "lucide-react"
+import { MoveDown, MoveRight, Star, ArrowLeft } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { toast } from "sonner"
 import { format, formatDistance } from "date-fns";
 import axios from "axios"
-import Footer from '@/components/Footer'
+import { NavLink } from "react-router-dom"
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
@@ -28,6 +28,10 @@ const RideDetail = () => {
     }
   };
 
+  const GoBackButton = () => {
+    navigate(-1);
+  };
+
   if (loading) {
     return <Skeleton className="w-full" />;
   }
@@ -37,8 +41,11 @@ const RideDetail = () => {
   }
 
   return (
-    <>
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+      <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
+        <ArrowLeft className="h-4 w-4" />
+          Retour
+      </NavLink>
       <div className="flex flex-col gap-8 md:flex-row jusitfy-center w-full">
         <div className="flex flex-col justify-start items-start gap-2 w-full">
           <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center w-full py-8 pb-4">
@@ -85,9 +92,6 @@ const RideDetail = () => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-
-          
-          <Button variant="transparent">Cancel Ride</Button>
           </div>
         </div>
         <div className="w-full sm:w-96 flex p-0 py-6 md:p-6 xl:p-8 flex-col">
@@ -121,8 +125,6 @@ const RideDetail = () => {
       </div>
       <Toaster />
     </main>
-    <Footer />
-    </>
   );
 };
 
