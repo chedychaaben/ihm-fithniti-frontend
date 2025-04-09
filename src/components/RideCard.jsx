@@ -54,7 +54,6 @@ const RideCard = ({details}) => {
             <span className="text-muted-foreground text-xs tracking-widest mt-0.5">{creator.name}</span>
           </span>
         </div>
-        <span>Nb place dispo : 123</span>
         <Button>Book Ride</Button>
       </div>
     </div>

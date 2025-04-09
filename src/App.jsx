@@ -9,6 +9,7 @@ import RideDetail from './pages/RideDetail'
 import Profile from './pages/Profile'
 import PublishedRides from './pages/PublishedRides'
 import BookedRides from './pages/BookedRides'
+import ListUsers from './pages/admin/ListUsers'
 
 function App() {
 
@@ -24,6 +25,11 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/published-rides" element={<PublishedRides />} />
       <Route path="/booked-rides" element={<BookedRides />} />
+
+
+
+      {/* Admin */}
+      <Route path="/admin/ListUsers" element={<ListUsers />} />
     </Routes>
     </>
   )

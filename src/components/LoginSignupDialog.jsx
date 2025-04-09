@@ -7,10 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
 import { useContext, useState } from "react"
 import { AuthContext } from "@/context/AuthContext"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const LoginSignupDialog = () => {
+  const navigate = useNavigate();
   const { loading, error, dispatch } = useContext(AuthContext);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [signupData, setSignupData] = useState({ name: "", email: "", password: "" });
@@ -22,6 +24,9 @@ const LoginSignupDialog = () => {
       const res = await axios.post(`${apiUri}/auth/login`, loginData, {withCredentials: true})
       dispatch({type:"LOGIN_SUCCESS", payload: res.data})
       setLoginData({ email: "", password: "" })
+      if (res.data.isAdmin) {
+        navigate("/admin/ListUsers");
+      }
     }catch(err){
       dispatch({type: "LOGIN_FAILED", payload: err.response.data})
     }
