@@ -53,11 +53,12 @@ const Sidebar = () => {
   ]
 
   const otherFilters = [
-    { name: 'max-passengers', title: 'Max. 2 passengers in the back' },
-    { name: 'smoking-allowed', title: 'Smoking allowed' },
-    { name: 'pets-allowed', title: 'Pets allowed' },
-    { name: 'air-conditioning', title: 'Air conditioning' },
-  ]
+    { name: 'bagage', title: "🧳" },
+    { name: 'maxUsersTwoInBack', title: "👥" },
+    { name: 'smokingAllowed', title: "🚬" },
+    { name: 'petsAllowed', title: "🐾" },
+    { name: 'airConditioning', title: "❄️" },
+  ];
 
   return (
     <aside className="space-y-4 py-4">
