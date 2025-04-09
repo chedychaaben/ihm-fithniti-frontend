@@ -28,8 +28,6 @@ const Header = () => {
       </NavLink>
       <nav className="ml-auto flex items-center text-base justify-center">
         <NavLink to="/search" className="flex items-center gap-2 mr-5 hover:text-primary"><Search className="h-4 w-4" />Search</NavLink>
-        <NavLink to="/published-rides" className="flex items-center gap-2 mr-5 hover:text-primary"> <Car className="h-4 w-4"/>Published Rides</NavLink>
-        <NavLink to="/booked-rides" className="flex items-center gap-2 mr-5 hover:text-primary"> <History className="h-4 w-4"/>Booked Rides</NavLink>
         <NavLink to="/offer-seat" className="flex items-center gap-2 mr-5 hover:text-primary"> <PlusCircle className="h-4 w-4"/> Publish a ride</NavLink>
       </nav>
       {!user ?
@@ -50,7 +48,19 @@ const Header = () => {
                 <User className="mr-2 h-4 w-4"/><span>Profile</span>
               </Link>
             </DropdownMenuItem>
-              
+            
+            <DropdownMenuItem>
+              <Link to="/published-rides" className="flex">
+              <Car className="mr-2 h-4 w-4"/><span>Published Rides</span>
+              </Link>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem>
+              <Link to="/booked-rides" className="flex">
+                <History className="mr-2 h-4 w-4"/><span>Booked Rides</span>
+              </Link>
+            </DropdownMenuItem>
+            
             <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/><span>Log Out</span></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
