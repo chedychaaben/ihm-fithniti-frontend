@@ -3,12 +3,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod"
+import { MapPin, Minus, Plus } from "lucide-react"
 import axios from "axios";
-import { Minus, Plus } from "lucide-react";
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const formSchema = z.object({
@@ -56,6 +64,35 @@ const PublishCard = () => {
     }
   };
 
+  
+  const destinations = [
+    "Ariana",
+    "Ben Arous",
+    "Bizerte",
+    "Béja",
+    "Gabès",
+    "Gafsa",
+    "Jendouba",
+    "Kairouan",
+    "Kasserine",
+    "Kebili",
+    "Kef",
+    "Mahdia",
+    "Manouba",
+    "Medenine",
+    "Monastir",
+    "Nabeul",
+    "Sfax",
+    "Sidi Bouzid",
+    "Siliana",
+    "Sousse",
+    "Tataouine",
+    "Tozeur",
+    "Tunis",
+    "Zaghouan",
+  ];
+  
+
   return (
     <Card className="w-[350px]">
       <CardHeader>
@@ -66,16 +103,26 @@ const PublishCard = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full items-center gap-4">
-          <FormField
+        <FormField
             control={form.control}
             name="from"
             render={({ field }) => (
               <FormItem className="flex flex-col space-y-1.5">
                 <FormLabel>From</FormLabel>
                 <FormControl>
-                  <Input placeholder="From" required {...field} />
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1">
+                      <SelectValue className="text-gray-400" placeholder="From" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {destinations.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -86,9 +133,19 @@ const PublishCard = () => {
               <FormItem className="flex flex-col space-y-1.5">
                 <FormLabel>To</FormLabel>
                 <FormControl>
-                  <Input placeholder="To" required {...field} />
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1">
+                      <SelectValue className="text-gray-400" placeholder="To" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {destinations.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
