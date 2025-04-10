@@ -3,7 +3,7 @@ import Search from "@/components/Search"
 
 const Hero = () => {
   return (
-    <div className="relative h-72 md:h-96 flex justify-center items-center bg-[#fee5ea]">
+    <div className="relative h-72 md:h-96 flex justify-center items-center bg-[#ebf3fa]">
       <div className="h-full">
         <img src={bg} className="h-full" alt="hero" />
       </div>
