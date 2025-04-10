@@ -2,10 +2,12 @@ import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/sonner"
 import { AuthContext } from "@/context/AuthContext"
 import axios from "axios"
-import { Trash, ArrowLeft } from "lucide-react"
+//import { Trash, ArrowLeft } from "lucide-react"
 import { Fragment, useContext, useState, useEffect } from "react"
 import { Navigate, useNavigate, NavLink } from "react-router-dom"
 import { toast } from "sonner"
+import { Ban, ArrowLeft } from "lucide-react"
+
 
 import {
   AlertDialog,
@@ -105,7 +107,8 @@ const ListUsers = () => {
                               onClick={() => setUserToBan(user._id)}
                               className="text-destructive hover:bg-destructive/10"
                             >
-                              <Trash size={20} />
+                            <Ban size={20} />
+
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

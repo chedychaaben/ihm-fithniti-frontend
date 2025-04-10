@@ -18,7 +18,7 @@ const SearchPage = () => {
   return (
     <>
     <main>
-      <div className="z-10 flex justify-center items-center border-b bg-background p-8">
+      <div className="z-10 flex justify-center items-center border-b bg-gray-100 p-8">
         <Search />
         <Dialog>
           <DialogTrigger className="md:hidden border border-lg p-2 bg-background absolute right-0">
