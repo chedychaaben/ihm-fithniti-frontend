@@ -24,7 +24,7 @@ const PopularRoutesSection = () => {
             <RideCard key={ride._id} details={ride} />
           ))
         ) : (
-          !loading && <p className="text-center">Aucun trajet populaire trouvé.</p>
+          !loading && <p className="text-center">Aucun trajet populaire trouvé test.</p>
         )}
       </div>
     </section>
