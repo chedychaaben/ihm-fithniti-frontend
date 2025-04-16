@@ -14,13 +14,13 @@ const OfferSeat = () => {
     },
     {
       step: 2,
-      title: "Publish a ride",
-      description: "Indicate departure and arrival points, the date of the ride and check our recommended price to increase your chances of getting your first passengers and ratings."
+      title: "Add Your Car",
+      description: "Share your car details to let riders know what to expect — comfort matters!"
     },
     {
       step: 3,
-      title: "Add Your Car",
-      description: "Share your car details to let riders know what to expect — comfort matters!"
+      title: "Publish a ride",
+      description: "Indicate departure and arrival points, the date of the ride and check our recommended price to increase your chances of getting your first passengers and ratings."
     },
     {
       step: 4,
@@ -42,13 +42,18 @@ const OfferSeat = () => {
         </NavLink>
       </div>
       <h1 className="text-3xl text-center p-5 font-bold"> <span className="text-primary"> Publish </span> a <span className="text-primary"> Ride </span> in Just <span className="text-primary">Minutes</span></h1>
-      <div className="container pt-6 max-w-screen-xl pb-16 mx-auto md:justify-center flex flex-col md:flex-row items-center lg:items-start ">
-        <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
-          <PublishCard />
-        </div>
+      
+      
+      <div className="pt-6 max-w-screen-xl pb-16 mx-auto md:justify-center flex flex-col md:flex-row items-center lg:items-start gap-10">
+        
         <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
           <PublishCarCard />
         </div>
+
+        <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
+          <PublishCard />
+        </div>
+
         <div className="flex flex-col flex-wrap gap-10 px-0 md:px-10 sm:py-0 md:w-2/3 text-left">
         {steps.map(step => 
           <div key={step.step} className="flex flex-col md:items-start">
@@ -61,6 +66,8 @@ const OfferSeat = () => {
         )}
         </div>
       </div>
+
+      
     </section>
     <Footer />
     </>
