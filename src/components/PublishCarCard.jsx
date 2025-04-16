@@ -146,7 +146,7 @@ const PublishCarCard = () => {
                   <FormItem>
                     <FormControl>
                       <Select onValueChange={(value) => { field.onChange(value); handleSelectCarrosserieChange(value); }} value={field.value}>
-                        <SelectTrigger>
+                        <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                           <SelectValue placeholder="Select Vehicle Body" />
                         </SelectTrigger>
                         <SelectContent>
@@ -167,6 +167,9 @@ const PublishCarCard = () => {
               />
             </div>
 
+            {!(form.watch("vehicleCarrosserie"))? 
+            ""
+            :
             <div className="space-y-2">
               <Label>Vehicle Marque</Label>
               <FormField
@@ -176,7 +179,7 @@ const PublishCarCard = () => {
                   <FormItem>
                     <FormControl>
                       <Select onValueChange={(value) => { field.onChange(value); handleSelectMarqueChange(value); }} value={field.value}>
-                        <SelectTrigger>
+                        <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                           <SelectValue placeholder="Select Vehicle Marque" />
                         </SelectTrigger>
                         <SelectContent>
@@ -195,37 +198,43 @@ const PublishCarCard = () => {
                 )}
               />
             </div>
+            }
 
-            <div className="space-y-2">
-              <Label>Vehicle Model</Label>
-              <FormField
-                control={form.control}
-                name="vehicleModel"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={(value) => { field.onChange(value); handleSelectModelChange(value); }} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Vehicle Model" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {selectedMarque && modelsByBrand[selectedMarque]?.map((model, index) => (
-                            <SelectItem key={index} value={model}>
-                              <div className="flex items-center gap-2">
-                                <span>{model}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {selectedCarrosserie && (
+            
+            {!(form.watch("vehicleCarrosserie") && form.watch("vehicleMarque"))? 
+            ""
+            :
+            
+              <div className="space-y-2">
+                <Label>Vehicle Model</Label>
+                <FormField
+                  control={form.control}
+                  name="vehicleModel"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select onValueChange={(value) => { field.onChange(value); handleSelectModelChange(value); }} value={field.value}>
+                          <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
+                            <SelectValue placeholder="Select Vehicle Model" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {selectedMarque && modelsByBrand[selectedMarque]?.map((model, index) => (
+                              <SelectItem key={index} value={model}>
+                                <div className="flex items-center gap-2">
+                                  <span>{model}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            }
+            {form.watch("vehicleCarrosserie") && form.watch("vehicleMarque") && form.watch("vehicleModel") && (
               <div className="mt-4">
                 <h3 className="text-lg font-semibold">Selected :</h3>
                 <div className="flex flex-col items-center mt-2">

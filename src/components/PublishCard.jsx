@@ -170,7 +170,7 @@ const PublishCard = () => {
                   <FormLabel>From</FormLabel>
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
+                    <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                       <SelectValue placeholder="City of Departure" />
                       </SelectTrigger>
                       <SelectContent>
@@ -181,7 +181,7 @@ const PublishCard = () => {
                         ))}
                       </SelectContent>
                     </Select>
-                  </FormControl>
+                  </FormControl><FormMessage />
                 </FormItem>
               )}
             />
@@ -193,7 +193,7 @@ const PublishCard = () => {
                   <FormLabel>To</FormLabel>
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
+                      <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                         <SelectValue placeholder="City of Destination" />
                       </SelectTrigger>
                       <SelectContent>
@@ -378,26 +378,26 @@ const PublishCard = () => {
 
             
             <div className="space-y-2">
-            <Label>Options</Label>
-            {otherFilters.map((o) => (
-              <FormField
-                key={o.name}
-                control={form.control}
-                name={o.name}
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <Label htmlFor={o.name}>{o.title}</Label>
-                    <FormControl>
-                      <Checkbox
-                        id={o.name}
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            ))}
+              <Label>Options</Label>
+              {otherFilters.map((o) => (
+                <FormField
+                  key={o.name}
+                  control={form.control}
+                  name={o.name}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <Label htmlFor={o.name}>{o.title}</Label>
+                      <FormControl>
+                        <Checkbox
+                          id={o.name}
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              ))}
             </div>
             
             <FormField
@@ -417,7 +417,7 @@ const PublishCard = () => {
                         });
                       }}>
                       <SelectTrigger
-                        className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1 ${
+                        className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${
                           !field.value ? "text-gray-400" : "text-black"
                         }`}
                       >
