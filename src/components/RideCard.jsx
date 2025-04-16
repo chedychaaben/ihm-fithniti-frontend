@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 
 const RideCard = ({ details }) => {
-  const { creator, origin, destination, startTime, endTime, price ,smokingAllowed,  petsAllowed , MaxUsersTwoInBack , AirConditioning } = details;
+  const { creator, origin, destination, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails } = details;
 
   const formattedStartDate = new Intl.DateTimeFormat("fr-FR", {
     weekday: "long",
@@ -118,23 +118,31 @@ const RideCard = ({ details }) => {
         <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
 
           {/* to be edited later */}
-          <span className="text-lg" title="Baggage">🧳</span>
-
-          <span className="text-lg" title={MaxUsersTwoInBack ? "Max 2 in back" : "No limit in back"}>
-            {MaxUsersTwoInBack ? "👥" : "👨‍👩‍👧"}
+          <span>
+            👥{maxTwoPassengersInBackSeats ? "Yes" : "No"}
           </span>
 
-          <span className="text-lg" title={petsAllowed ? "Pets Allowed" : "No Pets"}>
-            {petsAllowed ? "🐶" : "🐶🚫"} 
+          <span>
+            🧳{heavyLuggage ? "Yes" : "No"}
           </span>
 
-          <span className="text-lg" title={airConditioning ? "Air Conditioning" : "No Air Conditioning"}>
-            {AirConditioning ? "❄️" : "❄️❌"}
+          <span>
+            🚬{smokingAllowed ? "Yes" : "No"}
           </span>
 
-          <span className="text-lg" title={smokingAllowed ? "Smoking Allowed" : "No Smoking"}>
-            {smokingAllowed ? "🚬" : "🚭"}
+          <span>
+            🐶{petsAllowed ? "Yes" : "No"}
           </span>
+
+          <span>
+            ❄️{airConditioning ? "Yes" : "No"}
+          </span>
+
+          <span>{vehicleDetails.body}</span>
+          <span>{vehicleDetails.marque}</span>
+          <span>{vehicleDetails.model}</span>
+
+
 
           <Button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-medium transition-colors duration-300 shadow-md">
             Book Ride

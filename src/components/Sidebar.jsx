@@ -56,6 +56,7 @@ const Sidebar = ({ filters, onFiltersChange }) => {
     { name: 'departure_noon_to_seven', title: '12:00 - 18:00' },
   ], []);
 
+  
   return (
     <aside className="space-y-4 py-4">
       <div className="px-3 py-2">

@@ -15,6 +15,9 @@ const SearchPage = () => {
 
   const { loading, data, error } = useFetch(`rides/find?from=${from}&to=${to}&seat=${seat}&date=${date}`);
 
+  
+  const [filteredData, setFilteredData] = useState([]);
+
   // Initialize filters with the correct structure
   const [filters, setFilters] = useState({
     sortOption: 'Earliest departure',
@@ -36,6 +39,21 @@ const SearchPage = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+  
+    const updatedFilters = { ...filters, ...newFilters };
+  
+    const filtered = data.rides.filter((ride) => {
+      // Apply filters dynamically — example for airConditioning
+      if (updatedFilters.airConditioning !== undefined && ride.airConditioning !== updatedFilters.airConditioning) {
+        return false;
+      }
+      // Add more filter conditions as needed, e.g.:
+      // if (updatedFilters.city && ride.city !== updatedFilters.city) return false;
+  
+      return true; // Include the ride if it passed all filter conditions
+    });
+  
+    setFilteredData(filtered);
   };
 
 
@@ -71,18 +89,24 @@ const SearchPage = () => {
               {error && <h3>Error: {error.message}</h3>}
               {data && (
                 <>
+                <div className="flex justify-between">
                   <h3>
                     {from} <MoveRight className="inline-block" /> {to}
                   </h3>
-                  <h3>{data?.rides.length} rides available</h3>
-                  {data.rides.length === 0 ? (
-                    <h3 className="text-xl font-semibold">No rides available based on your search criteria.</h3>
-                  ) : (
-                    data.rides.map((ride) => (
-                      <Link key={ride._id} to={`/ride/${ride._id}`}>
-                        <RideCard details={ride} />
-                      </Link>
-                    ))
+                  <h3>
+                    {data?.rides.length} rides available
+                  </h3>
+                </div>
+                <button onClick={() => {console.log(filteredData)}}>SHOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</button>
+                <br />
+                {data.rides.length === 0 ? (
+                  <h3 className="text-xl font-semibold">No rides available based on your search criteria.</h3>
+                ) : (
+                  data.rides.map((ride) => (
+                    <Link key={ride._id} to={`/ride/${ride._id}`}>
+                      <RideCard details={ride} />
+                    </Link>
+                  ))
                   )}
                 </>
               )}
