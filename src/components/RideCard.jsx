@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 
 const RideCard = ({ details }) => {
-  const { creator, origin, destination, startTime, endTime, price } = details;
+  const { creator, origin, destination, startTime, endTime, price ,smokingAllowed,  petsAllowed , MaxUsersTwoInBack , AirConditioning } = details;
 
   const formattedStartDate = new Intl.DateTimeFormat("fr-FR", {
     weekday: "long",
@@ -16,6 +16,7 @@ const RideCard = ({ details }) => {
     const selectedDate = new Date(dateTimeInput);
     const hours = selectedDate.getHours().toString().padStart(2, '0');
     const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
+
     return `${hours}:${minutes}`;
   }
 
@@ -115,11 +116,25 @@ const RideCard = ({ details }) => {
         </div>
 
         <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
+
+          {/* to be edited later */}
           <span className="text-lg" title="Baggage">🧳</span>
-          <span className="text-lg" title="Max 2 in back">👥</span>
-          <span className="text-lg" title="No Smoking">🚬❌</span>
-          <span className="text-lg" title="No Pets">🐾❌</span>
-          <span className="text-lg" title="Air Conditioning">❄️</span>
+
+          <span className="text-lg" title={MaxUsersTwoInBack ? "Max 2 in back" : "No limit in back"}>
+            {MaxUsersTwoInBack ? "👥" : "👨‍👩‍👧"}
+          </span>
+
+          <span className="text-lg" title={petsAllowed ? "Pets Allowed" : "No Pets"}>
+            {petsAllowed ? "🐶" : "🐶🚫"} 
+          </span>
+
+          <span className="text-lg" title={airConditioning ? "Air Conditioning" : "No Air Conditioning"}>
+            {AirConditioning ? "❄️" : "❄️❌"}
+          </span>
+
+          <span className="text-lg" title={smokingAllowed ? "Smoking Allowed" : "No Smoking"}>
+            {smokingAllowed ? "🚬" : "🚭"}
+          </span>
 
           <Button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-medium transition-colors duration-300 shadow-md">
             Book Ride
