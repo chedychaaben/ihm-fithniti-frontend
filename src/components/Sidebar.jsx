@@ -62,7 +62,7 @@ const Sidebar = ({ filters, onFiltersChange }) => {
         <div className="flex items-center justify-between">
           <h2 className="mb-2 px-4 text-lg font-semibold">Sort by</h2>
           <span onClick={handleClearFilter} className="mb-2 px-4 text-sm text-primary text-right underline cursor-pointer">
-            Clear Filter
+            Reset Filter
           </span>
         </div>
         <RadioGroup value={sortOption} onValueChange={value => onFiltersChange({ ...filters, sortOption: value })}>

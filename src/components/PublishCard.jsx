@@ -85,9 +85,10 @@ const PublishCard = () => {
           model: selectedCar.model,
         },
         maxTwoPassengersInBackSeats: data.maxTwoPassengersInBackSeats,
+        heavyLuggage : data.heavyLuggage,
         smokingAllowed: data.smokingAllowed,
         petsAllowed: data.petsAllowed,
-        AirConditioning: data.airConditioning,
+        airConditioning: data.airConditioning,
 
 
         
@@ -385,20 +386,27 @@ const PublishCard = () => {
                   control={form.control}
                   name={o.name}
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <Label htmlFor={o.name}>{o.title}</Label>
+                    <FormItem className="flex items-center justify-between space-x-4 rounded-lg border p-4">
+                      <div
+                        className="flex-1 cursor-pointer"
+                        onClick={() => field.onChange(!field.value)}
+                      >
+                        <Label htmlFor={o.name} className="cursor-pointer">
+                          {o.title}
+                        </Label>
+                      </div>
                       <FormControl>
                         <Checkbox
                           id={o.name}
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
+                          checked={field.value === true}
+                          onCheckedChange={(val) => field.onChange(val)}
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
               ))}
-            </div>
+              </div>
             
             <FormField
             control={form.control}

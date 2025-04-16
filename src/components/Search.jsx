@@ -87,7 +87,7 @@ const Search = () => {
                 <MapPin className="opacity-50 sm:ml-2" />
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1">
+                    <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent border-none focus-visible:ring-offset-0 px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                       <SelectValue className="text-gray-400" placeholder="From" />
                     </SelectTrigger>
                     <SelectContent>
@@ -112,7 +112,7 @@ const Search = () => {
                 <MapPin className="opacity-50 sm:ml-2" />
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1">
+                    <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent border-none focus-visible:ring-offset-0 px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                       <SelectValue className="text-gray-400" placeholder="To" />
                     </SelectTrigger>
                     <SelectContent>
