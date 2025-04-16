@@ -1,64 +1,60 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Coins, Hourglass } from 'lucide-react'
 import { Label } from './ui/label'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 import { Checkbox } from './ui/checkbox'
 
-const Sidebar = () => {
-  const [sortOption, setSortOption] = useState('Earliest departure')
-  const [departureOptions, setDepartureOptions] = useState({
-    departure_before_six_am: false,
-    departure_six_to_noon: false,
-    departure_noon_to_six: false,
-  })
-  const [otherOptions, setOtherOptions] = useState({
-    'max-passengers': false,
-    'smoking-allowed': false,
-    'pets-allowed': false,
-    'air-conditioning': false,
-  })
+const Sidebar = ({ filters, onFiltersChange }) => {
+  const { sortOption, departureOptions, otherFilters } = filters;
 
   const handleClearFilter = () => {
-    setSortOption('')
-    setDepartureOptions({
-      departure_before_six_am: false,
-      departure_six_to_noon: false,
-      departure_noon_to_six: false,
-    })
-    setOtherOptions({
-      'max-passengers': false,
-      'smoking-allowed': false,
-      'pets-allowed': false,
-      'air-conditioning': false,
-    })
+    onFiltersChange({
+      sortOption: 'Earliest departure',
+      departureOptions: {
+        departure_before_seven_am: false,
+        departure_seven_to_noon: false,
+        departure_noon_to_seven: false,
+      },
+      otherFilters: [
+        { name: 'maxTwoPassengersInBackSeats', title: "👥 Max 2 Passengers in Back Seats", checked: false },
+        { name: 'heavyLuggage', title: "🧳 Heavy Luggage", checked: false },
+        { name: 'smokingAllowed', title: "🚬 Smoking Allowed", checked: false },
+        { name: 'petsAllowed', title: "🐾 Pets Allowed", checked: false },
+        { name: 'airConditioning', title: "❄️ Air Conditioning", checked: false },
+      ]
+    });
   }
 
   const toggleDeparture = (name) => {
-    setDepartureOptions(prev => ({ ...prev, [name]: !prev[name] }))
+    onFiltersChange({
+      ...filters,
+      departureOptions: {
+        ...departureOptions,
+        [name]: !departureOptions[name],
+      },
+    });
   }
 
-  const toggleOther = (name) => {
-    setOtherOptions(prev => ({ ...prev, [name]: !prev[name] }))
+  const toggleOtherFilter = (name) => {
+    const updatedFilters = otherFilters.map(filter =>
+      filter.name === name ? { ...filter, checked: !filter.checked } : filter
+    );
+    onFiltersChange({
+      ...filters,
+      otherFilters: updatedFilters,
+    });
   }
 
-  const sortBy = [
+  const sortBy = useMemo(() => [
     { icon: <Hourglass size={16} />, title: 'Earliest departure' },
     { icon: <Coins size={16} />, title: 'Lowest price' },
-  ]
+  ], []);
 
-  const departureTime = [
-    { name: 'departure_before_six_am', title: 'Before 6:00' },
-    { name: 'departure_six_to_noon', title: '6:00 - 12:00' },
-    { name: 'departure_noon_to_six', title: '12:00 - 18:00' },
-  ]
-
-  const otherFilters = [
-    { name: 'bagage', title: "🧳" },
-    { name: 'maxUsersTwoInBack', title: "👥" },
-    { name: 'smokingAllowed', title: "🚬" },
-    { name: 'petsAllowed', title: "🐾" },
-    { name: 'airConditioning', title: "❄️" },
-  ];
+  const departureTime = useMemo(() => [
+    { name: 'departure_before_seven_am', title: 'Before 7:00' },
+    { name: 'departure_seven_to_noon', title: '7:00 - 12:00' },
+    { name: 'departure_noon_to_seven', title: '12:00 - 18:00' },
+  ], []);
 
   return (
     <aside className="space-y-4 py-4">
@@ -69,7 +65,7 @@ const Sidebar = () => {
             Clear Filter
           </span>
         </div>
-        <RadioGroup value={sortOption} onValueChange={setSortOption}>
+        <RadioGroup value={sortOption} onValueChange={value => onFiltersChange({ ...filters, sortOption: value })}>
           {sortBy.map(s => (
             <Label key={s.title} htmlFor={s.title} className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
               {s.icon}
@@ -95,7 +91,7 @@ const Sidebar = () => {
         {otherFilters.map(o => (
           <Label key={o.name} htmlFor={o.name} className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
             {o.title}
-            <Checkbox checked={otherOptions[o.name]} onCheckedChange={() => toggleOther(o.name)} id={o.name} />
+            <Checkbox checked={o.checked} onCheckedChange={() => toggleOtherFilter(o.name)} id={o.name} />
           </Label>
         ))}
       </div>
@@ -103,4 +99,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default Sidebar;
