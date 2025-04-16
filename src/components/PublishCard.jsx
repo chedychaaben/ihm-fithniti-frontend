@@ -28,12 +28,18 @@ const formSchema = z.object({
   price: z.number().nonnegative(),
   startTime: z.date().min(new Date()),
   endTime: z.date().min(new Date()),
+  
+  
+  maxTwoPassengersInBackSeats: z.boolean().optional(),
+  heavyLuggage: z.boolean().optional(),
+  smokingAllowed: z.boolean().optional(),
+  petsAllowed: z.boolean().optional(),
+  airConditioning: z.boolean().optional(),
+
+
+  
   vehicleNumber: z.string().optional(),
   vehicleModel: z.string().optional(),
-  maxUsersTwoInBack: z.boolean().default(false),
-  smokingAllowed: z.boolean().default(false),
-  petsAllowed: z.boolean().default(false),
-  airConditioning: z.boolean().default(true),
 })
 
 const PublishCard = () => {
@@ -43,15 +49,23 @@ const PublishCard = () => {
       from: "",
       to: "",
       seat: 1,
-      price: 0,
+      price: 20,
       startTime: new Date(),
-      endTime: new Date(),
-      vehicleNumber: "",
-      vehicleModel: "",
-      maxUsersTwoInBack: false,
+      endTime: new Date(Date.now() + 24 * 60 * 60 * 1000), // adds 1 day
+
+
+
+
+
+      maxTwoPassengersInBackSeats: true,
+      heavyLuggage : false,
       smokingAllowed: false,
       petsAllowed: false,
       airConditioning: true,
+
+
+
+
     },
   });
 
@@ -68,6 +82,10 @@ const PublishCard = () => {
         startTime: data.startTime,
         endTime: data.endTime,
         price: data.price,
+
+
+
+
         vehicleDetails: {
           vehicleNumber: data.vehicleNumber,
           model: data.vehicleModel,
@@ -76,6 +94,9 @@ const PublishCard = () => {
         smokingAllowed: data.smokingAllowed,
         petsAllowed: data.petsAllowed,
         AirConditioning: data.airConditioning,
+
+
+        
         status: "pending"
       };
       
@@ -114,12 +135,13 @@ const PublishCard = () => {
     "Tunis",
     "Zaghouan",
   ];
-
+  
   const otherFilters = [
-    { name: 'maxUsersTwoInBack', title: "👥" },
-    { name: 'smokingAllowed', title: "🚬" },
-    { name: 'petsAllowed', title: "🐾" },
-    { name: 'airConditioning', title: "❄️" },
+    { name: 'maxTwoPassengersInBackSeats', title: "👥 Max 2 Passengers in Back Seats", checked: false },
+    { name: 'heavyLuggage', title: "🧳 Heavy Luggage", checked: false },
+    { name: 'smokingAllowed', title: "🚬 Smoking Allowed", checked: false },
+    { name: 'petsAllowed', title: "🐾 Pets Allowed", checked: false },
+    { name: 'airConditioning', title: "❄️ Air Conditioning", checked: false },
   ];
 
   return (
@@ -140,7 +162,7 @@ const PublishCard = () => {
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
-                      <SelectValue placeholder="city of departure" />
+                      <SelectValue placeholder="City of Departure" />
                       </SelectTrigger>
                       <SelectContent>
                         {destinations.map((city) => (
@@ -163,7 +185,7 @@ const PublishCard = () => {
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0 border-none px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
-                        <SelectValue placeholder="city of destination" />
+                        <SelectValue placeholder="City of Destination" />
                       </SelectTrigger>
                       <SelectContent>
                         {destinations.map((city) => (
@@ -177,12 +199,11 @@ const PublishCard = () => {
                 </FormItem>
               )}
             />
-            <div className="flex gap-24">
               <FormField
                 control={form.control}
                 name="seat"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col space-y-1.5">
+                  <FormItem className="flex flex-col space-y-1.5 items-center text-center">
                     <FormLabel>Available seats</FormLabel>
                     <FormControl>
                       <div className="flex gap-2 items-center">
@@ -190,7 +211,7 @@ const PublishCard = () => {
                           <Minus className="h-4 w-4" />
                         </Button>
                         <span>{field.value}</span>
-                        <Button variant="outline" size="icon" type="button" onClick={() => field.value<10 && field.onChange(field.value + 1)}  >
+                        <Button variant="outline" size="icon" type="button" onClick={() => field.value<4 && field.onChange(field.value + 1)}  >
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
@@ -212,7 +233,6 @@ const PublishCard = () => {
                   </FormItem>
                 )}
               />
-            </div>
             <FormField
               control={form.control}
               name="startTime"
@@ -247,26 +267,26 @@ const PublishCard = () => {
             />
             
             <div className="space-y-2">
-              <Label>Options</Label>
-              {otherFilters.map(o => (
-                <FormField
-                  key={o.name}
-                  control={form.control}
-                  name={o.name}
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <Label htmlFor={o.name}>{o.title}</Label>
-                      <FormControl>
-                        <Checkbox
-                          id={o.name}
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              ))}
+            <Label>Options</Label>
+            {otherFilters.map((o) => (
+              <FormField
+                key={o.name}
+                control={form.control}
+                name={o.name}
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <Label htmlFor={o.name}>{o.title}</Label>
+                    <FormControl>
+                      <Checkbox
+                        id={o.name}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ))}
             </div>
             <Button type="submit">Publish</Button>
           </form>
