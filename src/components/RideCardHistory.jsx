@@ -23,7 +23,7 @@ const RideCard = ({ details }) => {
 
   return (
     <div
-      className={`relative rounded-2xl my-4 p-6 border-2 transition-all duration-300 ${borderColor} bg-white shadow-md hover:shadow-lg`}
+      className={`w-full rounded-2xl my-4 p-6 border-2 transition-all duration-300 bg-white shadow-md hover:shadow-lg ${borderColor}`}
       onMouseOver={() => setBorderColor("border-blue-500")}
       onMouseOut={() => setBorderColor("border-gray-200")}
     >
@@ -121,9 +121,6 @@ const RideCard = ({ details }) => {
           <span className="text-lg" title="No Pets">🐾❌</span>
           <span className="text-lg" title="Air Conditioning">❄️</span>
 
-          <Button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-medium transition-colors duration-300 shadow-md">
-            Book Ride
-          </Button>
         </div>
       </div>
     </div>
