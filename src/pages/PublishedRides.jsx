@@ -1,4 +1,4 @@
-import RideCard from "@/components/RideCard"
+import RideCardHistory from "@/components/RideCardHistory"
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/sonner"
 import { AuthContext } from "@/context/AuthContext"
@@ -60,7 +60,7 @@ const PublishedRides = () => {
 
           {data?.ridesCreated?.map((ride) => (
             <Fragment key={ride._id}>
-              <RideCard details={ride} />
+              <RideCardHistory details={ride} />
 
               <div className="flex justify-end w-full mt-2">
                 <AlertDialog>

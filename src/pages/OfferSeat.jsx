@@ -1,4 +1,5 @@
 import PublishCard from "@/components/PublishCard"
+import PublishCarCard from "@/components/PublishCarCard"
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, NavLink } from "react-router-dom"
 import Footer from '@/components/Footer'
@@ -18,6 +19,11 @@ const OfferSeat = () => {
     },
     {
       step: 3,
+      title: "Add Your Car",
+      description: "Share your car details to let riders know what to expect — comfort matters!"
+    },
+    {
+      step: 4,
       title: "Enjoy the ride",
       description: "That's how easy it is to start saving on travel costs!"
     },
@@ -39,6 +45,9 @@ const OfferSeat = () => {
       <div className="container pt-6 max-w-screen-xl pb-16 mx-auto md:justify-center flex flex-col md:flex-row items-center lg:items-start ">
         <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
           <PublishCard />
+        </div>
+        <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
+          <PublishCarCard />
         </div>
         <div className="flex flex-col flex-wrap gap-10 px-0 md:px-10 sm:py-0 md:w-2/3 text-left">
         {steps.map(step => 
