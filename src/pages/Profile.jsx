@@ -118,43 +118,30 @@ const Profile = () => {
               </>
             }
           </div>
-          {
-            !editMode ?
-              <>
-                <Button variant='outline' onClick={() => setEditMode(true)} >Edit Profile</Button>
+                <>
                 <div className="flex justify-center items-start flex-col space-y-4 mt-8">
-                  <h3 className="text-base font-semibold leading-4 text-center md:text-left">About</h3>
-                  <p className="text-sm text-muted-foreground">Bio: {data?.profile?.bio}</p>
-                  <p className="text-sm text-muted-foreground">{data?.age && `${data?.age} y/o`}</p>
-                  <p className="text-sm text-muted-foreground">{data?.ridesCreated?.length} Rides published</p>
-                  <p className="text-sm text-muted-foreground">Member since {data?.createdAt.substring(0, 4)}</p>
-                </div>
-                <div className="flex justify-center items-start flex-col space-y-4 mt-8">
-                  <h3 className="text-base font-semibold leading-4 text-center md:text-left">Preferences</h3>
-                  <p className="text-sm text-muted-foreground">{data?.profile?.preferences?.music}</p>
-                  <p className="text-sm text-muted-foreground">{data?.profile?.preferences?.smoking}</p>
-                  <p className="text-sm text-muted-foreground">{data?.profile?.preferences?.petFriendly}</p>
-                </div>
-              </>
-              :
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+              <h3 className="text-base font-semibold leading-4 text-center md:text-left">About</h3>
+              <p className="text-sm text-muted-foreground">Bio : {data?.profile?.bio}</p>
+              <p className="text-sm text-muted-foreground"><span className="font-bold">{data?.ridesCreated?.length}</span> Rides published</p>
+              <p className="text-sm text-muted-foreground">
+                Member since  <span className="font-bold"> {new Date(data?.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+              </p>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
                 <Label htmlFor="name">Name</Label>
                 <Controller
                   name="name"
                   control={control}
-                  render={({ field }) => <Input required autoComplete="name" placeholder="Full name" id="name" {...field} />}
-                />
+                  render={({ field }) => <Input required autoComplete="name" placeholder="Full name" id="name" {...field} />} />
                 <Label htmlFor="bio">Bio</Label>
                 <Controller
                   name="bio"
                   control={control}
-                  render={({ field }) => <Textarea placeholder="Bio" id="bio" {...field} />}
-                />
+                  render={({ field }) => <Textarea placeholder="Bio" id="bio" {...field} />} />
 
                 <Button type="submit">Save</Button>
-                <Button variant='outline' onClick={(e) => { e.preventDefault(); reset(); setEditMode(false) }}>Cancel</Button>
-              </form>
-          }
+                <Button variant='outline' onClick={(e) => { e.preventDefault(); reset(); setEditMode(false) } }>Cancel</Button>
+              </form></>
         </div>
       </div>
       <Toaster />

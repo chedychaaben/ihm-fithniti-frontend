@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 const RideCard = ({ details }) => {
   const { creator, origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails } = details;
 
-  const formattedStartDate = new Intl.DateTimeFormat("fr-FR", {
+  const formattedStartDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",

@@ -124,26 +124,27 @@ const SearchPage = () => {
                   <Skeleton className="h-[200px] w-full my-3 p-4 rounded-xl" />
                 </>
               )}
-              {error && <h3>Error: {error.message}</h3>}
               {filteredData && (
                 <>
-                <div className="flex justify-between">
-                  <h3>
-                    {from} <MoveRight className="inline-block" /> {to}
-                  </h3>
-                  <h3>
-                    {filteredData.length} rides available
-                  </h3>
-                </div>
-                <br />
-                {filteredData.length === 0 ? (
-                  <h3 className="text-xl font-semibold">No rides available based on your search criteria.</h3>
-                ) : (
-                  filteredData.map((ride) => (
-                    <Link key={ride._id} to={`/ride/${ride._id}`}>
-                      <RideCard details={ride} />
-                    </Link>
-                  ))
+                  {filteredData.length === 0 ? (
+                    <h3 className="text-xl font-semibold">No rides available based on your search criteria.</h3>
+                  ) : (
+                    <>
+                      <div className="flex justify-between">
+                        <h3>
+                          {from} <MoveRight className="inline-block" /> {to}
+                        </h3>
+                        <h3>
+                          {filteredData.length} rides available
+                        </h3>
+                      </div>
+                      <br />
+                      {filteredData.map((ride) => (
+                        <Link key={ride._id} to={`/ride/${ride._id}`}>
+                          <RideCard details={ride} />
+                        </Link>
+                      ))}
+                    </>
                   )}
                 </>
               )}

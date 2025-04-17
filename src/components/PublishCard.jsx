@@ -150,6 +150,31 @@ const PublishCard = () => {
     { name: 'airConditioning', title: "❄️ Air Conditioning", checked: false },
   ];
 
+  const carTypes = [
+    { label: "City car", value: "citadine", image: "/images/cars/citadine.svg" },
+    { label: "Compact", value: "compacte", image: "/images/cars/compacte.svg" },
+    { label: "Sedan", value: "berline", image: "/images/cars/berline.svg" },
+    { label: "SUV", value: "suv", image: "/images/cars/suv.svg" },
+    { label: "Coupe", value: "coupe", image: "/images/cars/coupe.svg" },
+    { label: "Minivan", value: "monospace", image: "/images/cars/monospace.svg" },
+    { label: "Utility vehicle", value: "utilitaire", image: "/images/cars/utilitaire.svg" },
+    { label: "Pickup", value: "pickup", image: "/images/cars/pickup.svg" },
+    { label: "Convertible", value: "cabriolet", image: "/images/cars/cabriolet.svg" },
+  ];
+
+  const [isSpinning, setIsSpinning] = useState(false);
+
+  const handleClickSpinner = async () => {
+    setIsSpinning(true);
+
+    await Promise.all([
+      fetchCars(),
+      new Promise(resolve => setTimeout(resolve, 1000)) // minimum spin time
+    ]);
+
+    setIsSpinning(false);
+  };
+
   useEffect(() => {
     fetchCars();
   }, []);
@@ -432,17 +457,26 @@ const PublishCard = () => {
                         <SelectValue placeholder="Select Your Car" />
                       </SelectTrigger>
                       <SelectContent>
-                        {cars.map((car) => (
-                          <SelectItem
-                            key={car._id}
-                            value={`${car.body}@${car.marque}@${car.model}`}
-                          >
-                            {car.marque} {car.model} ({car.body})
-                          </SelectItem>
-                        ))}
+                        {cars.map((car) => {
+                          // Find the matching car type
+                          const matchedType = carTypes.find(type => type.value === car.body);
+                          const imageSrc = matchedType ? matchedType.image : '/images/cars/default.svg'; // fallback image
+                          
+                          return (
+                            <SelectItem key={car._id} value={`${car.body}@${car.marque}@${car.model}`}>
+                              <div className="flex items-center gap-2">
+                                <img src={imageSrc} alt={car.body} className="w-6 h-6 rounded" />
+                                <span>{car.marque} {car.model}</span>
+                              </div>
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
-                  <RefreshCw className="h-4 w-4 mt-3 ml-3" onClick= {()=> {fetchCars()}} cursor="pointer"/>
+                    <RefreshCw
+                      onClick={handleClickSpinner}
+                      className={`h-4 w-4 mt-3 ml-3 cursor-pointer ${isSpinning ? 'animate-spin linear infinite' : ''}`}
+                    />
                 </div>
                 </FormControl>
               </FormItem>
