@@ -40,7 +40,9 @@ const formSchema = z.object({
   airConditioning: z.boolean().optional(),
   car : z.string(),
 })
-
+const toUTCDate = (date) => {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+};
 const PublishCard = () => {
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState({"body" :"", "marque":"", "model":""});
@@ -74,8 +76,8 @@ const PublishCard = () => {
         destination: {
           place: data.to,
         },
-        startTime: data.startTime,
-        endTime: data.endTime,
+        startTime: toUTCDate(data.startTime),
+        endTime: toUTCDate(data.endTime),
         price: data.price,
 
 
@@ -378,7 +380,7 @@ const PublishCard = () => {
                           disabled={(date) => {
                             const today = new Date().setHours(0, 0, 0, 0);
                             if (!startDate) return date < today;
-                            return date < today || date <= new Date(startDate).setHours(0, 0, 0, 0);
+                            return date < today || date < new Date(startDate).setHours(0, 0, 0, 0);
                           }}
                           initialFocus
                         />

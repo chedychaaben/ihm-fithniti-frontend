@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button"
 
 const RideCard = ({ creator, details, withButton }) => {
   const { origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails } = details;
-
+  
   const backendUri = import.meta.env.VITE_REACT_BACKEND_URI
-               
+
+  
   const formattedStartDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     day: "numeric",
@@ -16,9 +17,9 @@ const RideCard = ({ creator, details, withButton }) => {
 
   function getTime(dateTimeInput) {
     const selectedDate = new Date(dateTimeInput);
-    const hours = selectedDate.getHours().toString().padStart(2, '0');
-    const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
-
+    const hours = selectedDate.getUTCHours().toString().padStart(2, '0'); // Using UTC hours
+    const minutes = selectedDate.getUTCMinutes().toString().padStart(2, '0'); // Using UTC minutes
+  
     return `${hours}:${minutes}`;
   }
 
@@ -26,13 +27,13 @@ const RideCard = ({ creator, details, withButton }) => {
 
   return (
     <div
-      className={`relative w-full my-4 p-6 border-2 transition-all duration-300 ${borderColor} bg-white shadow-md hover:shadow-lg`}
+      className={`relative rounded-xl w-full my-4 p-6 border-2 transition-all duration-300 ${borderColor} bg-white shadow-md hover:shadow-lg`}
       onMouseOver={() => setBorderColor("border-blue-500")}
       onMouseOut={() => setBorderColor("border-gray-200")}
     >
       {/* Date badge */}
       <div className="absolute -top-3 left-4 bg-blue-600 text-white text-xs font-semibold px-4 py-1 rounded-full shadow">
-        {formattedStartDate}
+        {formattedStartDate} - {startTime}
       </div>
 
       {/* Main content */}

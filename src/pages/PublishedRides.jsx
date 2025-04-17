@@ -57,7 +57,11 @@ const PublishedRides = () => {
           <div className="flex flex-col sm:flex-row h-full w-full justify-center items-center">
             <h1 className="text-xl font-semibold">Published Rides</h1>
           </div>
-
+            {data?.ridesCreated?.length === 0
+              ? <h3>No rides</h3>
+              :
+              ""
+            }
           {data?.ridesCreated?.map((ride) => (
             <Fragment key={ride._id}>
                 <RideCard creator={user.user} details={ride} withButton={false} />

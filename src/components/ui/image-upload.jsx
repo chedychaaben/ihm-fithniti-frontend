@@ -20,8 +20,6 @@ const ImageUpload = () => {
     // Create FormData to send the image to the server
     const formData = new FormData();
     formData.append("profileImage", file);
-    formData.append("userId", user.user._id);
-
     try {
       // Assuming the backend is set to handle the upload at '/upload'
       const res = await axios.post(`${apiUri}/users/upload-profilepicture`, formData, {
