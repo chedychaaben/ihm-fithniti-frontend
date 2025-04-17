@@ -61,7 +61,7 @@ const RideDetail = () => {
             <MoveRight size={32} className="hidden sm:block" />
             <MoveDown size={32} className="block sm:hidden" />
             <div className="flex flex-col space-y-2 ">
-              <h1 className="text-3xl font-semibold leading-7 lg:leading-9">{data?.destination.place}</h1>
+              <h1 className="text-3xl font-semibold leading-7 lg:leading-9">{data?.destination?.place}</h1>
               <p className="text-base font-medium leading-6 text-muted-foreground">
               {data && new Intl.DateTimeFormat("en-US", {weekday: "long",day: "numeric",month: "long",timeZone: "UTC",}).format(new Date(data?.endTime)) }
               </p>
@@ -72,7 +72,7 @@ const RideDetail = () => {
           
 
           <div className="w-full py-3 border-t">
-            <p className="text-base">{data && data.vehicleDetails.marque} {data && data.vehicleDetails.model} ({data && data.vehicleDetails.body})</p>
+            <p className="text-base">{data && data?.vehicleDetails?.marque} {data && data?.vehicleDetails?.model} ({data && data?.vehicleDetails?.body})</p>
           </div>
           <div className="w-full py-3 border-t">
             <p>Duration: {data && formatDistance(new Date(data.startTime), new Date(data.endTime))}</p>

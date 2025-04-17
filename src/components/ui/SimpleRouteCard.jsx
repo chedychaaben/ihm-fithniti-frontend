@@ -14,8 +14,7 @@ const SimpleRouteCard = ({ from, to, price, date }) => {
   const handleClick = () => {
     const queryParams = new URLSearchParams({
       from,
-      to,
-      date: date || new Date().toISOString().split("T")[0],
+      to
     }).toString()
     navigate(`/search?${queryParams}`)
   }
