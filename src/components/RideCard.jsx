@@ -33,7 +33,7 @@ const RideCard = ({ creator, details, withButton }) => {
     >
       {/* Date badge */}
       <div className="absolute -top-3 left-4 bg-blue-600 text-white text-xs font-semibold px-4 py-1 rounded-full shadow">
-        {formattedStartDate} - {startTime}
+        {formattedStartDate}
       </div>
 
       {/* Main content */}
