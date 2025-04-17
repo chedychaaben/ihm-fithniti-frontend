@@ -1,93 +1,90 @@
-import RideCard from "@/components/RideCard"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Toaster } from "@/components/ui/sonner"
-import ImageUpload from "@/components/ui/image-upload"
-import { Textarea } from "@/components/ui/textarea"
-import { AuthContext } from "@/context/AuthContext"
-import useFetch from "@/hooks/useFetch"
-import axios from "axios"
-import { Pencil, Star, Trash, ArrowLeft } from "lucide-react"
-import { Fragment, useContext, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
-import { Navigate, useNavigate, NavLink } from "react-router-dom"
-import { toast } from "sonner"
+import RideCard from "@/components/RideCard";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Toaster } from "@/components/ui/sonner";
+import ImageUpload from "@/components/ui/image-upload";
+import { Textarea } from "@/components/ui/textarea";
+import { AuthContext } from "@/context/AuthContext";
+import useFetch from "@/hooks/useFetch";
+import axios from "axios";
+import { Pencil, Star, Trash, ArrowLeft } from "lucide-react";
+import { Fragment, useContext, useState, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Navigate, useNavigate, NavLink } from "react-router-dom";
+import { toast } from "sonner";
 
-const apiUri = import.meta.env.VITE_REACT_API_URI
+const apiUri = import.meta.env.VITE_REACT_API_URI;
+const backendUri = import.meta.env.VITE_REACT_BACKEND_URI;
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext)
-
-  const [editMode, setEditMode] = useState(false)
-  const { loading, data, refetch } = useFetch(`users/${user.user._id}`, true)
+  const { user } = useContext(AuthContext);
+  const { loading, data, refetch } = useFetch(`users/${user?.user?._id}`, true);
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       name: "",
       bio: "",
+      age: "",
+      phoneNumber: "",
     },
-  })
+  });
 
   const onSubmit = async (newData) => {
     try {
-      await axios.patch(`${apiUri}/users/${user.user._id}`, {
-        name: newData.name,
-        profile: { ...data.profile, bio: newData.bio }
-      }, { withCredentials: true });
-      refetch();
-      reset()
-      setEditMode(false)
-    } catch (error) {
-      console.error('Patch error:', error);
-    }
-  }
-
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = async (e) => {
-    console.log("Handle f C clicked :)")
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setSelectedFile(file);
-
-    const formData = new FormData();
-    formData.append('avatar', file); // must match backend field name
-    console.log("selected image is ", file)
-    try {
-      const res = await axios.post('http://localhost:5000/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      await axios.post(
+        `${apiUri}/users/${user.user._id}`,
+        {
+          name: newData.name,
+          profile: { ...data?.profile, bio: newData.bio, age: newData.age, phoneNumber: newData.phoneNumber },
         },
-      });
-      console.log('Upload successful:', res.data);
-    } catch (err) {
-      console.error('Upload failed:', err);
+        { withCredentials: true }
+      );
+      await refetch();
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.error("Patch error:", error);
+      toast.error("Failed to update profile");
     }
   };
 
   const GoBackButton = () => {
     navigate(-1);
   };
+
+  // Reset form when data loads
+  useEffect(() => {
+    if (data) {
+      reset({
+        name: data.name || "",
+        bio: data.profile?.bio || "",
+        age: data.profile.age || "",
+        phoneNumber: data.profile.phoneNumber || "",
+      });
+    }
+  }, [data, reset]);
+
   if (!user) return <Navigate to="/" replace />;
 
   return (
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
-      <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
+      <NavLink
+        onClick={GoBackButton}
+        className="flex items-center gap-2 mb-6 hover:text-primary"
+      >
         <ArrowLeft className="h-4 w-4" />
         Retour
       </NavLink>
-      {selectedFile}
-      <div className="flex flex-col sm:flex-row h-full w-full justify-center items-center">
-        <div className="w-full sm:w-96 flex p-0 py-6 md:p-6 xl:p-8 flex-col">
-          <div className="relative flex w-full space-x-4 my-8">
-            {loading ?
+
+      <div className="flex flex-col md:flex-row gap-8 w-full max-w-6xl mx-auto">
+        {/* Profile Section */}
+        <div className="w-full md:w-1/3 lg:w-1/4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
+          <div className="relative flex items-start gap-4 mb-8">
+            {loading ? (
               <div className="flex items-center space-x-4">
                 <Skeleton className="h-12 w-12 rounded-full" />
                 <div className="space-y-2">
@@ -95,58 +92,171 @@ const Profile = () => {
                   <Skeleton className="h-4 w-[200px]" />
                 </div>
               </div>
-              :
+            ) : (
               <>
-                <Avatar>
-                  <AvatarImage src={data?.profilePicture} />
-                  <AvatarFallback className="select-none text-primary text-xl font-bold">{data?.name[0]}</AvatarFallback>
-                </Avatar>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Pencil size={20} className="absolute bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 p-1 cursor-pointer rounded-full bottom-0 -left-5" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem asChild>
-                      <ImageUpload />
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <div className="flex justify-center items-start flex-col space-y-2">
-                  <p className="text-base font-semibold leading-4 text-left">{data?.name}</p>
-                  <div className="flex items-center text-sm gap-1 text-muted-foreground"><Star fill="yellow" size={20} className="text-transparent" /> {data?.stars} - {data?.ratings?.length} ratings</div>
+                <div className="relative">
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage src={`${backendUri}${data?.profilePicture}`} />
+                    <AvatarFallback className="select-none text-primary text-xl font-bold">
+                      {data?.name?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="absolute -bottom-1 -right-1 bg-background p-1.5 rounded-full shadow-sm border hover:bg-gray-100 transition-colors">
+                        <Pencil size={16} />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <ImageUpload onSuccess={refetch} />
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <p className="text-lg font-semibold">{data?.name}</p>
+                  {data?.stars > 0 && (
+                    <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1 rounded-full">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={14}
+                          className={
+                            i < data.stars
+                              ? "fill-yellow-500 text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        />
+                      ))}
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {data.stars}/5
+                      </span>
+                    </div>
+                  )}
                 </div>
               </>
-            }
+            )}
           </div>
-                <>
-                <div className="flex justify-center items-start flex-col space-y-4 mt-8">
-              <h3 className="text-base font-semibold leading-4 text-center md:text-left">About</h3>
-              <p className="text-sm text-muted-foreground">Bio : {data?.profile?.bio}</p>
-              <p className="text-sm text-muted-foreground"><span className="font-bold">{data?.ridesCreated?.length}</span> Rides published</p>
-              <p className="text-sm text-muted-foreground">
-                Member since  <span className="font-bold"> {new Date(data?.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+
+          <div className="space-y-4 mb-8">
+            <h3 className="text-lg font-semibold">About</h3>
+            <div className="space-y-2 text-sm">
+              <p className="text-muted-foreground">
+                <span className="font-medium">{data?.ridesCreated?.length || 0}</span> rides published
+              </p>
+              <p className="text-muted-foreground">
+                Member since{" "}
+                <span className="font-medium">
+                  {data?.createdAt &&
+                    new Date(data.createdAt).toLocaleDateString("en-US", {
+                      month: "long",
+                      year: "numeric",
+                    })}
+                </span>
               </p>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          </div>
+
+          
+        </div>
+
+        {/* Rides Section */}
+        <div className="flex-1">
+          <h2 className="text-xl font-semibold mb-6">Edit Your Profile</h2>
+          <div className="grid gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
                 <Controller
                   name="name"
                   control={control}
-                  render={({ field }) => <Input required autoComplete="name" placeholder="Full name" id="name" {...field} />} />
+                  render={({ field }) => (
+                    <Input
+                      required
+                      autoComplete="name"
+                      placeholder="Full name"
+                      id="name"
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
                 <Controller
                   name="bio"
                   control={control}
-                  render={({ field }) => <Textarea placeholder="Bio" id="bio" {...field} />} />
+                  render={({ field }) => (
+                    <Textarea
+                      placeholder="Tell us about yourself"
+                      id="bio"
+                      rows={4}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
 
-                <Button type="submit">Save</Button>
-                <Button variant='outline' onClick={(e) => { e.preventDefault(); reset(); setEditMode(false) } }>Cancel</Button>
-              </form></>
+
+              <div className="space-y-2">
+                <Label htmlFor="age">Age</Label>
+                <Controller
+                  name="age"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      autoComplete="age"
+                      placeholder="Age"
+                      id="age"
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+
+              
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Controller
+                  name="phoneNumber"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      autoComplete="phoneNumber"
+                      placeholder="Phone Number"
+                      id="phoneNumber"
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <Button type="submit" className="flex-1">
+                  Save Changes
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    reset();
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-      <Toaster />
+
+      <Toaster position="top-center" />
     </main>
-  )
-}
+  );
+};
 
 export default Profile;

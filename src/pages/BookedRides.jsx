@@ -1,4 +1,4 @@
-import RideCardHistory from "@/components/RideCardHistory"
+import RideCard from "@/components/RideCard"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -76,7 +76,7 @@ const BookedRides = () => {
               ? <h3>No rides</h3>
               :
               data?.ridesJoined?.map(ride => 
-              <RideCardHistory key={ride._id} details={ride} />
+                <RideCard creator={user.user} details={ride} withButton={false} />
             )}
         </div>
         

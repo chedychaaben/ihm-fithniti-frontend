@@ -10,6 +10,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
+const backendUri = import.meta.env.VITE_REACT_BACKEND_URI
 
 const Header = () => {
   const {user, dispatch} = useContext(AuthContext)
@@ -58,7 +59,7 @@ const Header = () => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>
-              <AvatarImage src={user.user.profilePicture} />
+              <AvatarImage src={`${backendUri}${user.user?.profilePicture}`} />
               <AvatarFallback className="select-none text-primary text-xl font-bold">{user.user?.name[0]}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

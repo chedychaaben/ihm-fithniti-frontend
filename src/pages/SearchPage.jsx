@@ -141,7 +141,7 @@ const SearchPage = () => {
                       <br />
                       {filteredData.map((ride) => (
                         <Link key={ride._id} to={`/ride/${ride._id}`}>
-                          <RideCard details={ride} />
+                          <RideCard creator= {ride.creator} details={ride} withButton={true} />
                         </Link>
                       ))}
                     </>
