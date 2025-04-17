@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RideCard from '@/components/RideCard';
 import Search from '@/components/Search';
 import Sidebar from '@/components/Sidebar';
@@ -18,13 +18,12 @@ const SearchPage = () => {
   
   const [filteredData, setFilteredData] = useState([]);
 
-  // Initialize filters with the correct structure
   const [filters, setFilters] = useState({
-    sortOption: 'Earliest departure',
+    sortOption: null,
     departureOptions: {
-      departure_before_seven_am: false,
-      departure_seven_to_noon: false,
-      departure_noon_to_seven: false,
+      departure_before_eight_am: false,
+      departure_eight_am_to_four_pm: false,
+      departure_after_four_pm: false,
     },
     otherFilters: [
       { name: 'maxTwoPassengersInBackSeats', title: "👥 Max 2 Passengers in Back Seats", checked: false },
@@ -38,25 +37,64 @@ const SearchPage = () => {
   });
 
   const handleFilterChange = (newFilters) => {
-    setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
-  
-    const updatedFilters = { ...filters, ...newFilters };
-  
-    const filtered = data.rides.filter((ride) => {
-      // Apply filters dynamically — example for airConditioning
-      if (updatedFilters.airConditioning !== undefined && ride.airConditioning !== updatedFilters.airConditioning) {
-        return false;
-      }
-      // Add more filter conditions as needed, e.g.:
-      // if (updatedFilters.city && ride.city !== updatedFilters.city) return false;
-  
-      return true; // Include the ride if it passed all filter conditions
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      
+      if (!data?.rides) return updatedFilters; // Early return if no data
+      
+      const filtered = data.rides.filter((ride) => {
+        // Check departure time filters
+        const departureTime = new Date(ride.startTime).getHours();
+        
+        // If any departure time filter is active, check if ride matches
+        if (Object.values(updatedFilters.departureOptions).some(Boolean)) {
+          const matchesDeparture = 
+            (updatedFilters.departureOptions.departure_before_eight_am && departureTime < 8) ||
+            (updatedFilters.departureOptions.departure_eight_am_to_four_pm && departureTime >= 8 && departureTime < 16) ||
+            (updatedFilters.departureOptions.departure_after_four_pm && departureTime >= 16);
+          
+          if (!matchesDeparture) return false;
+        }
+        
+        for (const filter of updatedFilters.otherFilters) {
+          if (filter.checked && ride[filter.name] !== filter.checked) {
+            return false;
+          }
+        }
+        
+        return true;
+      });
+      
+      setFilteredData(filtered);
+      return updatedFilters;
     });
-  
-    setFilteredData(filtered);
   };
 
-
+  useEffect(() => {
+    if (data?.rides) {
+      setFilteredData(data?.rides);
+    }
+  }, [data]);
+  
+  useEffect(() => {
+    if (filteredData.length > 0) {
+      const sorted = [...filteredData].sort((a, b) => {
+        let comparison = 0;
+        
+        if (filters.sortOption === 'Earliest departure') {
+          comparison = new Date(a.startTime) - new Date(b.startTime);
+        } else if (filters.sortOption === 'Lowest price') {
+          comparison = a.price - b.price;
+        }
+        // Add other sort options as needed
+        
+        // Apply sort direction
+        return filters.sortDirection === 'desc' ? -comparison : comparison;
+      });
+      
+      setFilteredData(sorted);
+    }
+  }, [filters.sortOption, filters.sortDirection, filteredData]);
   
   return (
     <>
@@ -87,22 +125,21 @@ const SearchPage = () => {
                 </>
               )}
               {error && <h3>Error: {error.message}</h3>}
-              {data && (
+              {filteredData && (
                 <>
                 <div className="flex justify-between">
                   <h3>
                     {from} <MoveRight className="inline-block" /> {to}
                   </h3>
                   <h3>
-                    {data?.rides.length} rides available
+                    {filteredData.length} rides available
                   </h3>
                 </div>
-                <button onClick={() => {console.log(filteredData)}}>SHOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</button>
                 <br />
-                {data.rides.length === 0 ? (
+                {filteredData.length === 0 ? (
                   <h3 className="text-xl font-semibold">No rides available based on your search criteria.</h3>
                 ) : (
-                  data.rides.map((ride) => (
+                  filteredData.map((ride) => (
                     <Link key={ride._id} to={`/ride/${ride._id}`}>
                       <RideCard details={ride} />
                     </Link>

@@ -9,7 +9,7 @@ const Sidebar = ({ filters, onFiltersChange }) => {
 
   const handleClearFilter = () => {
     onFiltersChange({
-      sortOption: 'Earliest departure',
+      sortOption: null,
       departureOptions: {
         departure_before_seven_am: false,
         departure_seven_to_noon: false,
@@ -24,6 +24,7 @@ const Sidebar = ({ filters, onFiltersChange }) => {
       ]
     });
   }
+
 
   const toggleDeparture = (name) => {
     onFiltersChange({
@@ -51,14 +52,15 @@ const Sidebar = ({ filters, onFiltersChange }) => {
   ], []);
 
   const departureTime = useMemo(() => [
-    { name: 'departure_before_seven_am', title: 'Before 7:00' },
-    { name: 'departure_seven_to_noon', title: '7:00 - 12:00' },
-    { name: 'departure_noon_to_seven', title: '12:00 - 18:00' },
+    { name: 'departure_before_eight_am', title: 'Before 8:00' },
+    { name: 'departure_eight_am_to_four_pm', title: '8:00 - 16:00' },
+    { name: 'departure_after_four_pm', title: 'After 16:00' },
   ], []);
 
   
   return (
     <aside className="space-y-4 py-4">
+      
       <div className="px-3 py-2">
         <div className="flex items-center justify-between">
           <h2 className="mb-2 px-4 text-lg font-semibold">Sort by</h2>
@@ -66,12 +68,19 @@ const Sidebar = ({ filters, onFiltersChange }) => {
             Reset Filter
           </span>
         </div>
-        <RadioGroup value={sortOption} onValueChange={value => onFiltersChange({ ...filters, sortOption: value })}>
-          {sortBy.map(s => (
+        <RadioGroup 
+          value={sortOption} 
+          onValueChange={(value) => onFiltersChange({ ...filters, sortOption: value })}
+        >
+          {sortBy.map((s) => (
             <Label key={s.title} htmlFor={s.title} className="flex gap-2 items-center justify-between rounded-md bg-popover p-4 hover:bg-accent hover:text-accent-foreground">
               {s.icon}
               {s.title}
-              <RadioGroupItem value={s.title} className="ml-auto" id={s.title} />
+              <RadioGroupItem 
+                value={s.title} 
+                id={s.title} 
+                className="ml-auto" 
+              />
             </Label>
           ))}
         </RadioGroup>

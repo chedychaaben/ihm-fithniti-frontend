@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 
 const RideCard = ({ details }) => {
-  const { creator, origin, destination, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails } = details;
+  const { creator, origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails } = details;
 
   const formattedStartDate = new Intl.DateTimeFormat("fr-FR", {
     weekday: "long",
@@ -101,7 +101,7 @@ const RideCard = ({ details }) => {
           </div>
         </div>
       </div>
-
+            AVAILBLE SEATS : {availableSeats}
       {/* Footer */}
       <div className="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-100">
         <div className="flex items-center mb-3 sm:mb-0">
