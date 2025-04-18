@@ -20,17 +20,18 @@ const RideDetail = () => {
   const { rideId } = useParams();
   const { loading, data, error } = useFetch(`rides/${rideId}`);
 
-  const handleBook = async() => {
-    try{
-      const res = await axios.get(`${apiUri}/rides/${rideId}/join`, {withCredentials: true})
-      toast(res, {
+  const handleBook = async () => {
+    try {
+      const res = await axios.get(`${apiUri}/rides/${rideId}/join`, { withCredentials: true });
+      toast.success("Successfully booked the ride!", {
         description: format(new Date(), "PPp"),
       });
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.response?.data?.message || err.message || "An error occurred while booking.");
     }
   };
-
+  
   const GoBackButton = () => {
     navigate(-1);
   };
