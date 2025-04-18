@@ -33,27 +33,9 @@ const ImageUpload = () => {
     }
   };
 
-  const handleFetchUserData = async () => {
-    try {
-      
-      const res = await axios.get(`${apiUri}/users/68018bbd08ef38dbe2c74de4`, {
-        withCredentials: true, // Add credentials to the request
-      });
-      console.log("OKKKKKKKKKKKKKEY")
-      console.log(res.data)
-    } catch (err) {
-      console.error("Failed to fetch user data:", err);
-    }
-  };
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      <button
-        onClick={handleFetchUserData}
-        className="px-4 py-2 bg-green-500 text-white rounded-md mt-6"
-      >
-        Get User Data
-      </button>
       {/* Button to trigger file input click */}
       <button
         onClick={() => fileInputRef.current.click()}
