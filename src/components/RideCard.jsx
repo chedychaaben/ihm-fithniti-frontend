@@ -25,6 +25,22 @@ const RideCard = ({ creator, details, withButton }) => {
 
   const [borderColor, setBorderColor] = useState("border-gray-200");
 
+  
+  const carTypes = [
+    { label: "City car", value: "citadine", image: "/images/cars/citadine.svg" },
+    { label: "Compact", value: "compacte", image: "/images/cars/compacte.svg" },
+    { label: "Sedan", value: "berline", image: "/images/cars/berline.svg" },
+    { label: "SUV", value: "suv", image: "/images/cars/suv.svg" },
+    { label: "Coupe", value: "coupe", image: "/images/cars/coupe.svg" },
+    { label: "Minivan", value: "monospace", image: "/images/cars/monospace.svg" },
+    { label: "Utility vehicle", value: "utilitaire", image: "/images/cars/utilitaire.svg" },
+    { label: "Pickup", value: "pickup", image: "/images/cars/pickup.svg" },
+    { label: "Convertible", value: "cabriolet", image: "/images/cars/cabriolet.svg" },
+  ];
+
+  const matchedCarType = carTypes.find(car => car.value === vehicleDetails.body);
+  const carImage = matchedCarType ? matchedCarType.image : null;
+
   return (
     <div
       className={`relative rounded-xl w-full my-4 p-6 border-2 transition-all duration-300 ${borderColor} bg-white shadow-md hover:shadow-lg`}
@@ -90,7 +106,57 @@ const RideCard = ({ creator, details, withButton }) => {
           }
         </div>
       </div>
-            AVAILBLE SEATS : {availableSeats}
+
+      {/* Available seats & Vehicle details */}
+        <div className="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 rounded-xl ">
+          {/* Vehicle Info */}
+          <div >
+            <div className="flex">
+              <img 
+                src={carImage} 
+                alt={vehicleDetails.body} 
+                className="w-12 h-12 object-contain" 
+              />
+              <div className="text-gray-800 text-lg font-semibold">
+                {vehicleDetails.marque} {vehicleDetails.model}
+              </div>
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-gray-600">Available Seats : <span className="font-bold text-gray-800">{availableSeats} </span> </span>
+            </div>
+            
+          </div>
+          
+
+
+
+          <div className="flex items-center gap-2 ">
+            
+            
+            <span className="text-sm text-gray-600">
+              {maxTwoPassengersInBackSeats ? "👥 2 in the back" : ""}
+            </span>
+
+            <span className="text-sm text-gray-600">
+              {heavyLuggage ? "🧳 Heavy Luggage" : ""}
+            </span>
+
+            <span className="text-sm text-gray-600">
+              {smokingAllowed ? "🚬 Smoking Allowed" : ""}
+            </span>
+
+            <span className="text-sm text-gray-600">
+              {petsAllowed ? "🐶 Pets Allowed" : ""}
+            </span>
+
+            <span className="text-sm text-gray-600">
+              {airConditioning ? "❄️ Air Conditioning" : ""}
+            </span>
+
+          </div>
+        </div>
+
+      
       {/* Footer */}
       <div className="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-100">
         <div className="flex items-center mb-3 sm:mb-0">
@@ -104,33 +170,6 @@ const RideCard = ({ creator, details, withButton }) => {
           </div>
         </div>
         <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
-            
-          {/* to be edited later */}
-          <span>
-            👥{maxTwoPassengersInBackSeats ? "Yes" : "No"}
-          </span>
-
-          <span>
-            🧳{heavyLuggage ? "Yes" : "No"}
-          </span>
-
-          <span>
-            🚬{smokingAllowed ? "Yes" : "No"}
-          </span>
-
-          <span>
-            🐶{petsAllowed ? "Yes" : "No"}
-          </span>
-
-          <span>
-            ❄️{airConditioning ? "Yes" : "No"}
-          </span>
-
-          <span>{vehicleDetails.body}</span>
-          <span>{vehicleDetails.marque}</span>
-          <span>{vehicleDetails.model}</span>
-
-
           {withButton ? 
             <Button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full font-medium transition-colors duration-300 shadow-md">
               Book Ride
