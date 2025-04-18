@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import sfaxImg from "@/assets/sfax.jpg"
 import tunisImg from "@/assets/tunis.jpg"
 import sousseImg from "@/assets/sousse.jpg"
-import bezerteImg from "@/assets/bezerte.jpg"
+import bizerteImg from "@/assets/bizerte.jpg"
 import defaultImg from "@/assets/default.jpg"
 
 const SimpleRouteCard = ({ from, to, price, date }) => {
@@ -24,7 +24,7 @@ const SimpleRouteCard = ({ from, to, price, date }) => {
       sfax: sfaxImg,
       tunis: tunisImg,
       sousse: sousseImg,
-      bezerte: bezerteImg,
+      bizerte: bizerteImg,
       default: defaultImg,
     }
 
