@@ -33,9 +33,14 @@ const RideCard = ({ creator, details, withButton }) => {
     >
       {/* Date badge */}
       <div className="absolute -top-3 left-4 bg-blue-600 text-white text-xs font-semibold px-4 py-1 rounded-full shadow">
-        {formattedStartDate}
+        {formattedStartDate} - {new Intl.DateTimeFormat("en-US", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          timeZone: "UTC",
+        }).format(new Date(endTime))}
       </div>
-
+      
       {/* Main content */}
       <div className="flex flex-col md:flex-row gap-6">
         {/* Timeline section */}
