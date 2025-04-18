@@ -109,7 +109,7 @@ const Profile = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <ImageUpload onSuccess={refetch} />
+                        <ImageUpload  onSuccess={refetch} />
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

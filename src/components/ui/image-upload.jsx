@@ -1,15 +1,11 @@
 import React, { useState, useRef } from "react";
-import { AuthContext } from "@/context/AuthContext";
-import { useContext } from "react";
 import axios from "axios"; // Make sure axios is installed
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const ImageUpload = () => {
-  const [selectedFile, setSelectedFile] = useState(null); // To store the selected file
   const [preview, setPreview] = useState(null); // To store the file preview
   const fileInputRef = useRef(null); // Create a ref for the file input
-  const {user, dispatch} = useContext(AuthContext)
 
   // Handle file selection and upload
   const handleFileChange = async (e) => {
@@ -26,16 +22,17 @@ const ImageUpload = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true
       });
       console.log("Upload successful:", res.data);
-      // Set the preview of the image
       setPreview(URL.createObjectURL(file));
-      setSelectedFile(file);
+      // Set the preview of the image
       // You can do something with the uploaded image URL, like saving it to the user's profile
     } catch (err) {
       console.error("Upload failed:", err);
     }
   };
+
 
   return (
     <div className="flex flex-col items-center space-y-4">
