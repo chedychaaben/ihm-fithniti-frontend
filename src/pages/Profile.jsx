@@ -80,6 +80,7 @@ const Profile = () => {
       if (res.ok) {
         // Remove the deleted car from state
         setCars(prevCars => prevCars.filter(car => car._id !== carId));
+        toast.success("Car deleted!")
       } else {
         console.error("Delete failed:", data.message);
       }

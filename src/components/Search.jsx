@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/select"
 
 const searchSchema = z.object({
-  from: z.string(),
-  to: z.string(),
+  from: z.string().min(1, "From field is required"), // Ensure 'from' is a non-empty string
+  to: z.string().min(1, "To field is required"), // Ensure 'to' is a non-empty string
   seat: z.number().min(1).max(10),
   date: z.date(),
 })
@@ -92,13 +92,17 @@ const Search = () => {
           <FormField
             control={form.control}
             name="from"
+            required
             render={({ field }) => (
               <FormItem className="flex items-center space-y-0 w-full md:w-[400px]">
                 <MapPin className="opacity-50 sm:ml-2" />
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent border-none focus-visible:ring-offset-0 px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
-                      <SelectValue placeholder="From" />
+                    <SelectValue placeholder="From" />
+                      {form.formState.errors.from && (
+                        <span className="text-red-500">{form.formState.errors.from.message}</span>
+                      )}
                     </SelectTrigger>
                     <SelectContent>
                       {destinations.map((city) => (
@@ -111,12 +115,16 @@ const Search = () => {
                 </FormControl>
               </FormItem>
             )}
+            rules={{
+              required: "This field is required", // Error message on required validation failure
+            }}
           />
         </div>
         <div className="flex">
           <FormField
             control={form.control}
             name="to"
+            required
             render={({ field }) => (
               <FormItem className="flex items-center space-y-0 w-full md:w-[400px]">
                 <MapPin className="opacity-50 sm:ml-2" />
@@ -124,6 +132,9 @@ const Search = () => {
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent border-none focus-visible:ring-offset-0 px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
                       <SelectValue placeholder="To" />
+                      {form.formState.errors.to && (
+                        <span className="text-red-500">{form.formState.errors.to.message}</span>
+                      )}
                     </SelectTrigger>
                     <SelectContent>
                       {destinations.map((city) => (
@@ -136,12 +147,16 @@ const Search = () => {
                 </FormControl>
               </FormItem>
             )}
+            rules={{
+              required: "This field is required", // Error message on required validation failure
+            }}
           />
         </div>
         <div className="flex justify-between">
           <FormField
             control={form.control}
             name="date"
+            required
             render={({ field }) => (
               <FormItem className="flex">
                 <Popover>
@@ -150,6 +165,9 @@ const Search = () => {
                       <Button variant={"ghost"} className={cn("md:text-base px-0 sm:px-4 hover:bg-transparent", !field.value && "text-muted-foreground")}>
                         <CalendarIcon size={20} className="opacity-50 mr-1 text-foreground" />
                         {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        {form.formState.errors.date && (
+                          <span className="text-red-500">{form.formState.errors.date.message}</span>
+                        )}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>

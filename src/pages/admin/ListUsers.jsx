@@ -6,7 +6,7 @@ import axios from "axios"
 import { Fragment, useContext, useState, useEffect } from "react"
 import { Navigate, useNavigate, NavLink } from "react-router-dom"
 import { toast } from "sonner"
-import { Ban, ArrowLeft } from "lucide-react"
+import { Ban, ArrowLeft, RotateCcw  } from "lucide-react"
 
 
 import {
@@ -27,6 +27,7 @@ const ListUsers = () => {
   const { user } = useContext(AuthContext)
 
   const [userToBan, setUserToBan] = useState(null)
+  const [userTounBan, setUserTounBan] = useState(null)
   const [users, setUsers] = useState([])
 
   // Fetch all users from backend
@@ -53,6 +54,20 @@ const ListUsers = () => {
     } catch (error) {
       console.error("Error banning user:", error)
       toast.error("Failed to ban user.")
+    }
+  }
+
+  // Ban user function
+  async function handleunBan(id) {
+    try {
+      await axios.delete(`${apiUri}/admin/unban/${id}`, { withCredentials: true }) // Call your backend route for banning
+      setUsers(users.map(user => 
+        user._id === id ? { ...user, isBanned: false } : user
+      ));
+      toast("User has been unbanned.")
+    } catch (error) {
+      console.error("Error unbanning user:", error)
+      toast.error("Failed to unban user.")
     }
   }
 
@@ -99,33 +114,64 @@ const ListUsers = () => {
                       <td className="px-4 py-2">{user.email}</td>
                       <td className="px-4 py-2">{user.isBanned? "Banned" : "Actif"}</td>
                       <td className="px-4 py-2">
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => setUserToBan(user._id)}
-                              className="text-destructive hover:bg-destructive/10"
-                            >
-                            <Ban size={20} />
-
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Are you sure you want to ban this user?</AlertDialogTitle>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-destructive hover:bg-destructive/90 text-white"
-                                onClick={() => handleBan(userToBan)}
+                        {!user.isBanned?
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setUserToBan(user._id)}
+                                className="text-destructive hover:bg-destructive/10"
                               >
-                                Yes, Ban
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                              <Ban size={20} />
+
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure you want to ban this user?</AlertDialogTitle>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-destructive hover:bg-destructive/90 text-white"
+                                  onClick={() => handleBan(userToBan)}
+                                >
+                                  Yes, Ban
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                          :
+                          
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setUserTounBan(user._id)}
+                                className="text-emerald-600 hover:bg-emerald-100"
+                              >
+                              <RotateCcw size={20} />
+
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure you want to unban this user?</AlertDialogTitle>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="text-white-100 hover:bg-emerald-600 bg-emerald-100"
+                                  onClick={() => handleunBan(userTounBan)}
+                                >
+                                  Yes, Unban
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                          }
                       </td>
                     </tr>
                   </Fragment>

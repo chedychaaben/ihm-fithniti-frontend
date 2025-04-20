@@ -5,16 +5,23 @@ import Sidebar from '@/components/Sidebar';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import useFetch from '@/hooks/useFetch';
-import { MoveRight, SlidersHorizontal } from 'lucide-react';
+import { MoveRight, SlidersHorizontal, ArrowLeft} from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate} from "react-router-dom"
 import Footer from '@/components/Footer';
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
+
 
 const SearchPage = () => {
+  const navigate = useNavigate();
   const { search } = useLocation();
+  const {user, dispatch} = useContext(AuthContext)
   const { from, to, date, seat } = Object.fromEntries(new URLSearchParams(search));
 
   const { loading, data, error } = useFetch(`rides/find?from=${from}&to=${to}&seat=${seat}&date=${date}`);
 
+  const currentUserId = user?.user?._id;
   
   const [filteredData, setFilteredData] = useState([]);
 
@@ -32,49 +39,52 @@ const SearchPage = () => {
       { name: 'petsAllowed', title: "🐾 Pets Allowed", checked: false },
       { name: 'airConditioning', title: "❄️ Air Conditioning", checked: false },
     ],
-    seat,
-    date
   });
 
   const handleFilterChange = (newFilters) => {
-    setFilters((prevFilters) => {
-      const updatedFilters = { ...prevFilters, ...newFilters };
-      
-      if (!data?.rides) return updatedFilters; // Early return if no data
-      
-      const filtered = data.rides.filter((ride) => {
-        // Check departure time filters
+    const updatedFilters = {
+      ...filters,
+      ...newFilters,
+    };
+  
+    let filtered = [];
+  
+    if (data?.rides && data.rides.length > 0) {
+      filtered = data.rides.filter((ride) => {
         const departureTime = new Date(ride.startTime).getHours();
-        
-        // If any departure time filter is active, check if ride matches
+  
         if (Object.values(updatedFilters.departureOptions).some(Boolean)) {
-          const matchesDeparture = 
+          const matchesDeparture =
             (updatedFilters.departureOptions.departure_before_eight_am && departureTime < 8) ||
             (updatedFilters.departureOptions.departure_eight_am_to_four_pm && departureTime >= 8 && departureTime < 16) ||
             (updatedFilters.departureOptions.departure_after_four_pm && departureTime >= 16);
-          
+  
           if (!matchesDeparture) return false;
         }
-        
+  
         for (const filter of updatedFilters.otherFilters) {
           if (filter.checked && ride[filter.name] !== filter.checked) {
             return false;
           }
         }
-        
+  
         return true;
       });
-      
-      setFilteredData(filtered);
-      return updatedFilters;
-    });
+    }
+  
+    // ✅ Always update both
+    setFilteredData(filtered);
+    setFilters(updatedFilters);
   };
 
   useEffect(() => {
     if (data?.rides) {
-      setFilteredData(data?.rides);
+      setFilteredData(data.rides.filter((ride) => {
+        // Only filter out rides where the creator._id is equal to currentUserId if currentUserId exists
+        return currentUserId ? ride.creator._id !== currentUserId : true;
+      }));
     }
-  }, [data]);
+  }, [data, currentUserId]);  // Add currentUserId to the dependency array
   
   useEffect(() => {
     if (filteredData.length > 0) {
@@ -96,6 +106,9 @@ const SearchPage = () => {
     }
   }, [filters.sortOption, filters.sortDirection, filteredData]);
   
+  const GoBackButton = () => {
+    navigate(-1);
+  };
   return (
     <>
       <main>
@@ -118,6 +131,12 @@ const SearchPage = () => {
           </div>
           <div className="col-span-3 py-6 md:col-span-4 lg:border-l">
             <div className="container">
+              
+              <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
+                <ArrowLeft className="h-4 w-4" />
+                  Retour
+              </NavLink>
+              <br/>
               {loading && (
                 <>
                   <Skeleton className="h-[200px] w-full my-3 p-4 rounded-xl" />
@@ -140,9 +159,7 @@ const SearchPage = () => {
                       </div>
                       <br />
                       {filteredData.map((ride) => (
-                        <Link key={ride._id} to={`/ride/${ride._id}`}>
-                          <RideCard creator= {ride.creator} details={ride} withButton={true} />
-                        </Link>
+                          <RideCard to={`/ride/${ride._id}`} creator={ride.creator} details={ride} pageOrigin={"search"} />
                       ))}
                     </>
                   )}

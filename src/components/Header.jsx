@@ -2,9 +2,10 @@ import logo from "../assets/logo.svg"
 import { Link, NavLink, useNavigate,  } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage  } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Search, PlusCircle, LogOut, User, Car, History } from "lucide-react";
+import { Search, PlusCircle, LogOut, User, Car, History, Settings } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
 import { Button } from "./ui/button"
+import { toast } from "sonner"
 import LoginSignupDialog from "./LoginSignupDialog";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
@@ -18,6 +19,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    toast("loggedout!");
   
     dispatch({ type: 'LOGOUT' });
     navigate("/");
@@ -30,6 +32,14 @@ const Header = () => {
         <h1 className="font-bold text-xl text-primary hidden sm:block">FiTheniti</h1>
       </NavLink>
       <nav className="ml-auto flex items-center text-base justify-center">
+        {user?.isAdmin ?
+          <NavLink to="/admin/ListUsers" className="flex items-center gap-2 mr-5 hover:text-primary">
+            <Settings className="h-4 w-4" />
+            Administration
+          </NavLink>
+          :
+          ""
+          }
         <NavLink to="/search" className="flex items-center gap-2 mr-5 hover:text-primary"><Search className="h-4 w-4" />Search</NavLink>
         {!user ? (
           <Dialog>
@@ -47,7 +57,7 @@ const Header = () => {
             Publish a ride
           </NavLink>
         )}
-        </nav>
+      </nav>
       {!user ?
           <Dialog>
             <DialogTrigger asChild>

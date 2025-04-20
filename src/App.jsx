@@ -10,6 +10,7 @@ import Profile from './pages/Profile'
 import PublishedRides from './pages/PublishedRides'
 import BookedRides from './pages/BookedRides'
 import ListUsers from './pages/admin/ListUsers'
+import { Toaster } from "@/components/ui/sonner"
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
       {/* Admin */}
       <Route path="/admin/ListUsers" element={<ListUsers />} />
     </Routes>
+    <Toaster position="top-center" />
     </>
   )
 }

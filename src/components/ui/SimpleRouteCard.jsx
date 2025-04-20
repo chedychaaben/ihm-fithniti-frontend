@@ -51,7 +51,7 @@ const SimpleRouteCard = ({ from, to, price, date }) => {
     const images = {
       tunis: tunisImg,
       ariana: arianaImg,
-      benarous: benArousImg,  // Removed the space between "Ben" and "Arous"
+      benarous: benArousImg,
       manouba: manoubaImg,
       nabeul: nabeulImg,
       zaghouan: zaghouanImg,
@@ -76,7 +76,6 @@ const SimpleRouteCard = ({ from, to, price, date }) => {
       default: defaultImg,
     };
   
-    // Normalize and format the city name (remove spaces, accents, lowercase)
     const formattedCity = formatCityName(city);
   
     return images[formattedCity] || images.default;

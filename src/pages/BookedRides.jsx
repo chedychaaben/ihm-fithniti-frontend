@@ -76,7 +76,7 @@ const BookedRides = () => {
               ? <h3>No rides</h3>
               :
               data?.ridesJoined?.slice().reverse().map(ride => 
-                <RideCard creator={user.user} details={ride} withButton={false} />
+                <RideCard creator={user.user} details={ride} pageOrigin={"booked-rides"} />
             )}
         </div>
         
