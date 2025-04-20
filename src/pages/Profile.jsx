@@ -337,13 +337,23 @@ const Profile = () => {
                 <Controller
                   name="age"
                   control={control}
-                  render={({ field }) => (
-                    <Input
-                      autoComplete="age"
-                      placeholder="Age"
-                      id="age"
-                      {...field}
-                    />
+                  rules={{ 
+                    validate: value => value > 18 || "Age must be more than 18"
+                  }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        autoComplete="age"
+                        placeholder="Age"
+                        id="age"
+                        {...field}
+                      />
+                      {fieldState.error && (
+                        <p className="text-red-500 text-sm">
+                          {fieldState.error.message}
+                        </p>
+                      )}
+                    </>
                   )}
                 />
               </div>
