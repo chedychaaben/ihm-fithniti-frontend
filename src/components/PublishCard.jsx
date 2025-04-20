@@ -27,19 +27,22 @@ import {
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const formSchema = z.object({
-  from: z.string(),
-  to: z.string(),
+  from: z.string().min(1, { message: "Departure city is required" }),
+  to: z.string().min(1, { message: "Destination city is required" }),
   availableSeats: z.number().min(1).max(4),
-  price: z.number().nonnegative(),
+  price: z.number().min(1, { message: "Price must be greater than 0" }),
+  
   startTime: z.date().min(new Date()),
   endTime: z.date().min(new Date()),
+
   maxTwoPassengersInBackSeats: z.boolean().optional(),
   heavyLuggage: z.boolean().optional(),
   smokingAllowed: z.boolean().optional(),
   petsAllowed: z.boolean().optional(),
   airConditioning: z.boolean().optional(),
-  car : z.string(),
-})
+  car: z.string().min(1, { message: "You must select a car" }),
+});
+
 const toUTCDate = (date) => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
 };
@@ -233,6 +236,7 @@ const PublishCard = () => {
                       </SelectContent>
                     </Select>
                   </FormControl>
+                  <FormMessage /> 
                 </FormItem>
               )}
             />
@@ -481,6 +485,7 @@ const PublishCard = () => {
                     />
                 </div>
                 </FormControl>
+                <FormMessage /> 
               </FormItem>
             )}
           />
