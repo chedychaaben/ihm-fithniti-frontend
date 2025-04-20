@@ -29,6 +29,13 @@ const PublishedRides = () => {
   const [rideToDelete, setRideToDelete] = useState(null)
   const { loading, data, refetch } = useFetch(`users/${user.user._id}`, true)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 3
+
+  const GoBackButton = () => {
+    navigate(-1)
+  }
+
   async function handleDelete(id) {
     try {
       await axios.delete(`${apiUri}/rides/${id}`, { withCredentials: true })
@@ -39,11 +46,11 @@ const PublishedRides = () => {
     }
   }
 
-  const GoBackButton = () => {
-    navigate(-1)
-  }
-
   if (!user) return <Navigate to="/" replace />
+
+  const rides = data?.ridesCreated?.slice().reverse() || []
+  const totalPages = Math.ceil(rides.length / itemsPerPage)
+  const paginatedRides = rides.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   return (
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -57,45 +64,67 @@ const PublishedRides = () => {
           <div className="flex flex-col sm:flex-row h-full w-full justify-center items-center">
             <h1 className="text-xl font-semibold">Published Rides</h1>
           </div>
-            {data?.ridesCreated?.length === 0
-              ? <h3>No rides</h3>
-              :
-              ""
-            }
-          {data?.ridesCreated?.slice().reverse().map((ride) => (
-            <Fragment key={ride._id}>
-                <RideCard creator={user.user} details={ride} pageOrigin={"published-rides"} />
 
-              <div className="flex justify-end w-full mt-2">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setRideToDelete(ride._id)}
-                      className="text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash size={20} />
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure you want to delete this ride?</AlertDialogTitle>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        className="bg-destructive hover:bg-destructive/90 text-white"
-                        onClick={() => handleDelete(rideToDelete)}
-                      >
-                        Yes, Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+          {rides.length === 0 ? (
+            <h3>No rides</h3>
+          ) : (
+            <>
+              {paginatedRides.map((ride) => (
+                <Fragment key={ride._id}>
+                  <RideCard creator={user.user} details={ride} pageOrigin={"published-rides"} />
+                  <div className="flex justify-end w-full mt-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setRideToDelete(ride._id)}
+                          className="text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash size={20} />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure you want to delete this ride?</AlertDialogTitle>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="bg-destructive hover:bg-destructive/90 text-white"
+                            onClick={() => handleDelete(rideToDelete)}
+                          >
+                            Yes, Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </Fragment>
+              ))}
+
+              {/* Pagination */}
+              <div className="flex justify-center items-center gap-2 mt-6">
+                <Button
+                  variant="outline"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                >
+                  Previous
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                  Next
+                </Button>
               </div>
-            </Fragment>
-          ))}
+            </>
+          )}
         </div>
       </div>
 

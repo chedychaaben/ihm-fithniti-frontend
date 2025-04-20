@@ -376,13 +376,40 @@ const RideDetail = () => {
                   </div>
                 </div>
               </div>
+              
               <div className="flex justify-center items-start flex-col space-y-4 mt-8">
                 <p className="text-base font-semibold leading-4 text-center md:text-left">About the Driver</p>
-                <p className="text-sm text-muted-foreground"><span className="font-bold">{data?.creator.ridesCreated?.length}</span> Rides published</p>
-                <p className="text-sm text-muted-foreground">
-                  Member since  <span className="font-bold"> {new Date(data?.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                </p>
+
+                {data?.creator?.ridesCreated?.length > 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-bold">{data.creator.ridesCreated.length}</span> Rides published
+                  </p>
+                )}
+
+                {data?.creator?.profile?.bio && (
+                  <p className="text-sm text-muted-foreground">{data.creator.profile.bio}</p>
+                )}
+
+                {data?.creator?.profile?.age && (
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-bold">{data.creator.profile.age}</span> Years old
+                  </p>
+                )}
+
+                {data?.creator?.profile?.phoneNumber && (
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-bold">+216 </span>{data.creator.profile.phoneNumber}
+                  </p>
+                )}
+
+                {data?.createdAt && (
+                  <p className="text-sm text-muted-foreground">
+                    Member since
+                    <span className="font-bold"> {new Date(data.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+                  </p>
+                )}
               </div>
+
             </div>
           </div>
         </div>

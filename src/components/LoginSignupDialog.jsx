@@ -100,7 +100,7 @@ const LoginSignupDialog = () => {
                     id="email"
                     type="email"
                     autoComplete="email"
-                    placeholder="you@example.com"
+                    placeholder="user@fitheniti.com"
                     value={loginData.email}
                     onChange={(e) =>
                       setLoginData({ ...loginData, email: e.target.value })
@@ -148,7 +148,7 @@ const LoginSignupDialog = () => {
                   <Input
                     id="name"
                     autoComplete="name"
-                    placeholder="John Doe"
+                    placeholder="Name Lastname"
                     value={signupData.name}
                     onChange={(e) =>
                       setSignupData({ ...signupData, name: e.target.value })
@@ -162,7 +162,7 @@ const LoginSignupDialog = () => {
                     id="newemail"
                     type="email"
                     autoComplete="email"
-                    placeholder="you@example.com"
+                    placeholder="user@fitheniti.com"
                     value={signupData.email}
                     onChange={(e) =>
                       setSignupData({ ...signupData, email: e.target.value })

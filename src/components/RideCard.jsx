@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Sun, Moon } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
+import { format, formatDistance } from "date-fns";
 import {  useEffect } from 'react';
 import axios from "axios"
 
@@ -162,24 +163,6 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
             <div className="text-2xl font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-lg">
               {price} TND
             </div>
-            { creator?.stars == null || creator?.stars == 0 || pageOrigin === "published-rides"
-              ?
-              ""
-              :
-              <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className={`w-4 h-4 ${i < creator.stars ? "text-yellow-500" : "text-gray-300"}`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                <span className="text-sm font-medium text-gray-700">{creator.stars}/5</span>
-              </div>
-            }
           </div>
         </div>
 
@@ -198,38 +181,7 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 p-4 rounded-xl bg-gray-50 shadow-sm">
-                <div className="text-sm font-semibold text-gray-600">
-                  Available Seats: <span className="font-bold text-gray-800 ml-1">{availableSeats}</span>
-                </div>
 
-                { passengersData.length === 0 ? "" 
-                :
-                  <div>
-                    <span className="text-sm font-semibold text-gray-600 block mb-1">Passengers:</span>
-                    <ul className="flex flex-wrap gap-3">
-                      {passengersData.map(user => (
-                        <li key={user._id}>
-                          <Avatar>
-                            <AvatarImage src={`${backendUri}${user?.profilePicture}`} />
-                            <AvatarFallback className="select-none text-primary text-xl font-bold">
-                              {user?.name[0]}
-                            </AvatarFallback>
-                          </Avatar>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                }
-              </div>
-
-              
-            </div>
-            
-            
-            <div className="flex items-center gap-2 ">
-              
-              
               <span className="text-sm text-gray-600">
                 {maxTwoPassengersInBackSeats ? "👥 2 in the back" : ""}
               </span>
@@ -249,7 +201,45 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
               <span className="text-sm text-gray-600">
                 {airConditioning ? "❄️ Air Conditioning" : ""}
               </span>
+              
+              
+            </div>
+            
+            
+            <div className="flex items-center gap-2 ">
+              
+              <div className="flex flex-col gap-3 p-4 rounded-xl bg-gray-10 shadow-sm">
+                  <div className="text-sm font-semibold text-gray-600">
+                    Available Seats: <span className="font-bold text-gray-800 ml-1">{availableSeats}</span>
+                  </div>
 
+                  { passengersData.length === 0 ? "" 
+                  :
+                    <div>
+                      <span className="text-sm font-semibold text-gray-600 block mb-1">Passengers:</span>
+                      <ul className="flex flex-wrap gap-3">
+                        {passengersData.map(user => (
+                          <li key={user._id}>
+                            <Avatar>
+                              <AvatarImage src={`${backendUri}${user?.profilePicture}`} />
+                              <AvatarFallback className="select-none text-primary text-xl font-bold">
+                                {user?.name[0]}
+                              </AvatarFallback>
+                            </Avatar>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  }
+                  
+                  <div className="w-full py-3 border-t">
+                    <p>
+                      Duration: {startTime && endTime ? formatDistance(new Date(startTime), new Date(endTime)) : "N/A"}
+                    </p>
+                  </div>
+
+                </div>
+              
             </div>
           </div>
 
@@ -264,6 +254,24 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
             <div className="ml-3">
               <p className="font-medium text-gray-800">{creator.name}</p>
               <p className="text-xs text-gray-500">{creator.profile.bio}</p>
+              { creator?.stars == null || creator?.stars == 0 || pageOrigin === "published-rides"
+                ?
+                ""
+                :
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className={`w-4 h-4 ${i < creator.stars ? "text-yellow-500" : "text-gray-300"}`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  <span className="text-sm font-medium text-gray-700">{creator.stars}/5</span>
+                </div>
+              }
             </div>
           </div>
           <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
