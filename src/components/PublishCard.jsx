@@ -101,7 +101,13 @@ const PublishCard = () => {
       };
       console.log(body);
       await axios.post(`${apiUri}/rides`, body, {withCredentials: true});
-      toast("The ride has been Created");
+      toast("The ride has been created.", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
       form.reset();
     } catch (error) {
       console.error('POST request failed:', error);
@@ -493,7 +499,7 @@ const PublishCard = () => {
           </form>
         </Form>
       </CardContent>
-      <Toaster position="top-center" />
+      
     </Card>
   )
 }
