@@ -16,6 +16,7 @@ import { Fragment, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Navigate, useNavigate, NavLink } from "react-router-dom";
 import { toast } from "sonner";
+import PublishCarCard from "@/components/PublishCarCard"
 
 const apiUri = import.meta.env.VITE_REACT_API_URI;
 const backendUri = import.meta.env.VITE_REACT_BACKEND_URI;
@@ -24,6 +25,39 @@ const Profile = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { loading, data, refetch } = useFetch(`users/${user?.user?._id}`, true);
+  const [cars, setCars] = useState([]);
+  const [loadingCars, setLoadingCars] = useState(true);
+
+  const carTypes = [
+    { label: "City car", value: "citadine", image: "/images/cars/citadine.svg" },
+    { label: "Compact", value: "compacte", image: "/images/cars/compacte.svg" },
+    { label: "Sedan", value: "berline", image: "/images/cars/berline.svg" },
+    { label: "SUV", value: "suv", image: "/images/cars/suv.svg" },
+    { label: "Coupe", value: "coupe", image: "/images/cars/coupe.svg" },
+    { label: "Minivan", value: "monospace", image: "/images/cars/monospace.svg" },
+    { label: "Utility vehicle", value: "utilitaire", image: "/images/cars/utilitaire.svg" },
+    { label: "Pickup", value: "pickup", image: "/images/cars/pickup.svg" },
+    { label: "Convertible", value: "cabriolet", image: "/images/cars/cabriolet.svg" },
+  ];
+
+  const fetchCars = async () => {
+    try {
+      setLoadingCars(true);
+      const res = await fetch(`${apiUri}/cars/getmycars`, {
+        credentials: "include", // since your `useFetch` has `withCredentials: true`
+      });
+      const data = await res.json();
+      setCars(data);
+    } catch (err) {
+      console.error("Failed to fetch cars:", err);
+    } finally {
+      setLoadingCars(false);
+    }
+  };
+
+  const getCarImageByBodyName = (value) => {
+    return carTypes.find((carType) => carType.value === value)?.image;
+  };
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -33,6 +67,10 @@ const Profile = () => {
       phoneNumber: "",
     },
   });
+
+
+
+  
 
   const onSubmit = async (newData) => {
     try {
@@ -66,6 +104,8 @@ const Profile = () => {
         phoneNumber: data.profile.phoneNumber || "",
       });
     }
+    
+    fetchCars();
   }, [data, reset]);
 
   if (!user) return <Navigate to="/" replace />;
@@ -158,12 +198,38 @@ const Profile = () => {
               </p>
             </div>
           </div>
-
+          {
+            loadingCars ? 
+            ""
+            :
+            <div className="space-y-4 mb-8">
+              <h3 className="text-lg font-semibold">Cars</h3>
+              <div className="space-y-2 text-sm">
+                <div>
+                  <div className="flex flex-wrap gap-4">
+                    {cars.map((car, index) => (
+                      <div key={index} className="flex gap-4 items-center justify-center text-gray-800 text-lg font-semibold">
+                        <img 
+                          src={getCarImageByBodyName(car.body)}
+                          alt={car.body}
+                          className="w-12 h-12 object-contain" 
+                        />
+                        <span>
+                          {car.marque} {car.model}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          }
           
         </div>
 
         {/* Rides Section */}
-        <div className="flex-1">
+        <div className="w-full md:w-1/3 lg:w-1/2 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
           <h2 className="text-xl font-semibold mb-6">Edit Your Profile</h2>
           <div className="grid gap-4">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -251,8 +317,15 @@ const Profile = () => {
               </div>
             </form>
           </div>
+
         </div>
+
+        <div className="w-full md:w-1/2 lg:w-1/4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
+          <PublishCarCard cars={cars} setCars={setCars}/>
+        </div>
+
       </div>
+
 
       <Toaster position="top-center" />
     </main>

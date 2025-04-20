@@ -1,5 +1,4 @@
 import PublishCard from "@/components/PublishCard"
-import PublishCarCard from "@/components/PublishCarCard"
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, NavLink } from "react-router-dom"
 import Footer from '@/components/Footer'
@@ -46,10 +45,6 @@ const OfferSeat = () => {
       
       <div className="pt-6 max-w-screen-xl pb-16 mx-auto md:justify-center flex flex-col md:flex-row items-center lg:items-start gap-10">
         
-        <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
-          <PublishCarCard />
-        </div>
-
         <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
           <PublishCard />
         </div>
