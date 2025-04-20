@@ -3,22 +3,22 @@ import axios from "axios"; // Make sure axios is installed
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
-const ImageUpload = () => {
+const ImageUpload = ({image}) => {
   const [preview, setPreview] = useState(null); // To store the file preview
   const fileInputRef = useRef(null); // Create a ref for the file input
 
   // Handle file selection and upload
-  const handleFileChange = async (e) => {
+  const handleFileChange = async (e,) => {
     const file = e.target.files[0];
     if (!file) return;
 
 
     // Create FormData to send the image to the server
     const formData = new FormData();
-    formData.append("profileImage", file);
+    formData.append("Image", file);
     try {
       // Assuming the backend is set to handle the upload at '/upload'
-      const res = await axios.post(`${apiUri}/users/upload-profilepicture`, formData, {
+      const res = await axios.post(`${apiUri}/users/upload-${image}picture`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -27,7 +27,6 @@ const ImageUpload = () => {
       console.log("Upload successful:", res.data);
       setPreview(URL.createObjectURL(file));
       // Set the preview of the image
-      // You can do something with the uploaded image URL, like saving it to the user's profile
     } catch (err) {
       console.error("Upload failed:", err);
     }
@@ -41,7 +40,7 @@ const ImageUpload = () => {
         onClick={() => fileInputRef.current.click()}
         className="px-4 py-2 bg-blue-500 text-white rounded-md"
       >
-        Change Profile Image
+        Upload {image} Image
       </button>
 
       {/* Hidden file input */}

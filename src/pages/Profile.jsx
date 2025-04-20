@@ -16,7 +16,17 @@ import { Fragment, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Navigate, useNavigate, NavLink } from "react-router-dom";
 import { toast } from "sonner";
-import PublishCarCard from "@/components/PublishCarCard"
+import PublishCarCard from "@/components/PublishCarCard";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction
+} from "@/components/ui/alert-dialog"
 
 const apiUri = import.meta.env.VITE_REACT_API_URI;
 const backendUri = import.meta.env.VITE_REACT_BACKEND_URI;
@@ -26,6 +36,8 @@ const Profile = () => {
   const { user } = useContext(AuthContext);
   const { loading, data, refetch } = useFetch(`users/${user?.user?._id}`, true);
   const [cars, setCars] = useState([]);
+  
+  const [carToDelete, setCarToDelete] = useState(null)
   const [loadingCars, setLoadingCars] = useState(true);
 
   const carTypes = [
@@ -50,6 +62,29 @@ const Profile = () => {
       setCars(data);
     } catch (err) {
       console.error("Failed to fetch cars:", err);
+    } finally {
+      setLoadingCars(false);
+    }
+  };
+
+  const deleteCar = async (carId) => {
+    try {
+      setLoadingCars(true); // Optional: if you want to indicate a loading state
+      const res = await fetch(`${apiUri}/cars/${carId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        // Remove the deleted car from state
+        setCars(prevCars => prevCars.filter(car => car._id !== carId));
+      } else {
+        console.error("Delete failed:", data.message);
+      }
+    } catch (err) {
+      console.error("Error deleting car:", err);
     } finally {
       setLoadingCars(false);
     }
@@ -149,7 +184,7 @@ const Profile = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <ImageUpload  onSuccess={refetch} />
+                        <ImageUpload  onSuccess={refetch} image={"profile"}/>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -199,7 +234,7 @@ const Profile = () => {
             </div>
           </div>
           {
-            loadingCars ? 
+            loadingCars || cars.length===0 ? 
             ""
             :
             <div className="space-y-4 mb-8">
@@ -217,6 +252,34 @@ const Profile = () => {
                         <span>
                           {car.marque} {car.model}
                         </span>
+                        <div className="flex justify-end w-full mt-2">
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setCarToDelete(car._id)}
+                                className="text-destructive hover:bg-destructive/10"
+                              >
+                                <Trash size={20} />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure you want to delete {car.body} {car.marque} {car.model} ?</AlertDialogTitle>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-destructive hover:bg-destructive/90 text-white"
+                                  onClick={() => deleteCar(car._id)}
+                                >
+                                  Yes, Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -251,23 +314,6 @@ const Profile = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="bio">Bio</Label>
-                <Controller
-                  name="bio"
-                  control={control}
-                  render={({ field }) => (
-                    <Textarea
-                      placeholder="Tell us about yourself"
-                      id="bio"
-                      rows={4}
-                      {...field}
-                    />
-                  )}
-                />
-              </div>
-
-
-              <div className="space-y-2">
                 <Label htmlFor="age">Age</Label>
                 <Controller
                   name="age"
@@ -299,6 +345,84 @@ const Profile = () => {
                   )}
                 />
               </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="file">Identity Card Picture</Label>
+                <Controller
+                  name="file"
+                  control={control}
+                  render={({ field: { onChange, value, ...rest } }) => (
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="file"
+                        id="file"
+                        onChange={(e) => onChange(e.target.files?.[0])}
+                        className="block w-full text-sm text-gray-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-md file:border file:border-gray-300
+                          file:text-sm file:font-medium
+                          file:bg-white file:text-gray-700
+                          hover:file:bg-gray-100 hover:file:border-gray-400
+                          transition-colors duration-200
+                        "
+                        {...rest}
+                      />
+                      {value && (
+                        <span className="text-sm text-muted-foreground truncate max-w-[200px]">
+                          {value.name}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="file">Driver License Picture</Label>
+                <Controller
+                  name="file"
+                  control={control}
+                  render={({ field: { onChange, value, ...rest } }) => (
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="file"
+                        id="file"
+                        onChange={(e) => onChange(e.target.files?.[0])}
+                        className="block w-full text-sm text-gray-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-md file:border file:border-gray-300
+                          file:text-sm file:font-medium
+                          file:bg-white file:text-gray-700
+                          hover:file:bg-gray-100 hover:file:border-gray-400
+                          transition-colors duration-200
+                        "
+                        {...rest}
+                      />
+                      {value && (
+                        <span className="text-sm text-muted-foreground truncate max-w-[200px]">
+                          {value.name}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio</Label>
+                <Controller
+                  name="bio"
+                  control={control}
+                  render={({ field }) => (
+                    <Textarea
+                      placeholder="Tell us about yourself"
+                      id="bio"
+                      rows={4}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
 
               <div className="flex gap-2 pt-2">
                 <Button type="submit" className="flex-1">
@@ -317,7 +441,6 @@ const Profile = () => {
               </div>
             </form>
           </div>
-
         </div>
 
         <div className="w-full md:w-1/2 lg:w-1/4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">

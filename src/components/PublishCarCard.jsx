@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const apiUri = import.meta.env.VITE_REACT_API_URI;
+const backendUri = import.meta.env.VITE_REACT_BACKEND_URI;
 
 const formSchema = z.object({
   vehicleCarrosserie: z.string().nonempty("Vehicle body is required"),
@@ -241,6 +243,29 @@ const PublishCarCard = ({cars,setCars}) => {
                   />
                 </div>
               }
+
+              <div className="space-y-2">
+                <Label>Vehicle Registration</Label>
+                <FormField
+                  control={form.control}
+                  name="carteGrise"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => field.onChange(e.target.files?.[0])}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              
+
               {form.watch("vehicleCarrosserie") && form.watch("vehicleMarque") && form.watch("vehicleModel") && (
                 <div className="mt-4">
                   <h3 className="text-lg font-semibold">Selected :</h3>
