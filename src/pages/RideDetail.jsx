@@ -169,7 +169,7 @@ const RideDetail = () => {
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
         <ArrowLeft className="h-4 w-4" />
-          Retour
+          Back
       </NavLink>
       <div className="flex flex-col gap-8 md:flex-row jusitfy-center w-full">
         <div className="flex flex-col justify-start items-start gap-2 w-full">
