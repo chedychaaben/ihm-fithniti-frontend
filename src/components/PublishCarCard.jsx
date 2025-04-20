@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Toaster } from "./ui/sonner";
 
 const apiUri = import.meta.env.VITE_REACT_API_URI;
 
@@ -20,7 +19,7 @@ const formSchema = z.object({
   vehicleModel: z.string().min(1, "Vehicle model is required"),
 });
 
-const PublishCarCard = () => {
+const PublishCarCard = ({cars,setCars}) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -40,11 +39,22 @@ const PublishCarCard = () => {
       };
 
       await axios.post(`${apiUri}/cars`, body, { withCredentials: true });
-      toast("The car has been Added");
+      setCars(prevCars => [...prevCars, body]);
+      toast("The car has been Added", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+        },
+      });
       form.reset();
     } catch (error) {
       console.error("POST request failed:", error);
-      toast.error("Failed to add car");
+      toast("Failed to add car", {
+        style: {
+          background: '#FEE2E2', // light red
+          color: '#991B1B',      // dark red text
+        },
+      });
     }
   };
 
@@ -129,99 +139,29 @@ const PublishCarCard = () => {
   };
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Add Your Car</CardTitle>
-        <CardDescription>Add your car details.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full items-center gap-4">
-            <div className="space-y-2">
-              <Label>Vehicle Body</Label>
-              <FormField
-                control={form.control}
-                name="vehicleCarrosserie"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={(value) => { field.onChange(value); handleSelectCarrosserieChange(value); }} value={field.value}>
-                        <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
-                          <SelectValue placeholder="Select Vehicle Body" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {carTypes.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
-                              <div className="flex items-center gap-2">
-                                <img src={type.image} alt={type.label} className="w-6 h-6 rounded" />
-                                <span>{type.label}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {!(form.watch("vehicleCarrosserie"))? 
-            ""
-            :
-            <div className="space-y-2">
-              <Label>Vehicle Marque</Label>
-              <FormField
-                control={form.control}
-                name="vehicleMarque"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={(value) => { field.onChange(value); handleSelectMarqueChange(value); }} value={field.value}>
-                        <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
-                          <SelectValue placeholder="Select Vehicle Marque" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {car_factories.map((factory, index) => (
-                            <SelectItem key={index} value={factory}>
-                              <div className="flex items-center gap-2">
-                                <span>{factory}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            }
-
-            
-            {!(form.watch("vehicleCarrosserie") && form.watch("vehicleMarque"))? 
-            ""
-            :
-            
+    <>
+      <h2 className="text-xl font-semibold mb-6">Add a car</h2>
+      <div className="grid gap-4">
+      <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full items-center gap-4">
               <div className="space-y-2">
-                <Label>Vehicle Model</Label>
+                <Label>Vehicle Body</Label>
                 <FormField
                   control={form.control}
-                  name="vehicleModel"
+                  name="vehicleCarrosserie"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Select onValueChange={(value) => { field.onChange(value); handleSelectModelChange(value); }} value={field.value}>
+                        <Select onValueChange={(value) => { field.onChange(value); handleSelectCarrosserieChange(value); }} value={field.value}>
                           <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
-                            <SelectValue placeholder="Select Vehicle Model" />
+                            <SelectValue placeholder="Select Vehicle Body" />
                           </SelectTrigger>
                           <SelectContent>
-                            {selectedMarque && modelsByBrand[selectedMarque]?.map((model, index) => (
-                              <SelectItem key={index} value={model}>
+                            {carTypes.map((type) => (
+                              <SelectItem key={type.value} value={type.value}>
                                 <div className="flex items-center gap-2">
-                                  <span>{model}</span>
+                                  <img src={type.image} alt={type.label} className="w-6 h-6 rounded" />
+                                  <span>{type.label}</span>
                                 </div>
                               </SelectItem>
                             ))}
@@ -233,21 +173,8 @@ const PublishCarCard = () => {
                   )}
                 />
               </div>
-            }
-            {form.watch("vehicleCarrosserie") && form.watch("vehicleMarque") && form.watch("vehicleModel") && (
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold">Selected :</h3>
-                <div className="flex flex-col items-center mt-2">
-                  <img
-                    src={selectedCarrosserie.image}
-                    alt={selectedCarrosserie.label}
-                    className="w-48 h-48 object-cover rounded"
-                  />
-                  <p>{selectedCarrosserie.label} {selectedMarque} {selectedModel}</p>
-                </div>
-              </div>
-            )}
 
+<<<<<<< Updated upstream
             <Button type="submit" disabled={!form.watch("vehicleCarrosserie") || !form.watch("vehicleMarque") || !form.watch("vehicleModel")}>
               Add
             </Button>
@@ -256,6 +183,96 @@ const PublishCarCard = () => {
       </CardContent>
       <Toaster position="top-center" />
     </Card>
+=======
+              {!(form.watch("vehicleCarrosserie"))? 
+              ""
+              :
+              <div className="space-y-2">
+                <Label>Vehicle Marque</Label>
+                <FormField
+                  control={form.control}
+                  name="vehicleMarque"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select onValueChange={(value) => { field.onChange(value); handleSelectMarqueChange(value); }} value={field.value}>
+                          <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
+                            <SelectValue placeholder="Select Vehicle Marque" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {car_factories.map((factory, index) => (
+                              <SelectItem key={index} value={factory}>
+                                <div className="flex items-center gap-2">
+                                  <span>{factory}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              }
+
+              
+              {!(form.watch("vehicleCarrosserie") && form.watch("vehicleMarque"))? 
+              ""
+              :
+              
+                <div className="space-y-2">
+                  <Label>Vehicle Model</Label>
+                  <FormField
+                    control={form.control}
+                    name="vehicleModel"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Select onValueChange={(value) => { field.onChange(value); handleSelectModelChange(value); }} value={field.value}>
+                            <SelectTrigger className={`focus-visible:ring-0 md:text-base focus-visible:ring-transparent focus-visible:ring-offset-0   px-1 ${!field.value ? "text-gray-400" : "text-black"}`}>
+                              <SelectValue placeholder="Select Vehicle Model" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {selectedMarque && modelsByBrand[selectedMarque]?.map((model, index) => (
+                                <SelectItem key={index} value={model}>
+                                  <div className="flex items-center gap-2">
+                                    <span>{model}</span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              }
+              {form.watch("vehicleCarrosserie") && form.watch("vehicleMarque") && form.watch("vehicleModel") && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold">Selected :</h3>
+                  <div className="flex flex-col items-center mt-2">
+                    <img
+                      src={selectedCarrosserie.image}
+                      alt={selectedCarrosserie.label}
+                      className="w-48 h-48 object-cover rounded"
+                    />
+                    <p>{selectedCarrosserie.label} {selectedMarque} {selectedModel}</p>
+                  </div>
+                </div>
+              )}
+
+              <Button type="submit" disabled={!form.watch("vehicleCarrosserie") || !form.watch("vehicleMarque") || !form.watch("vehicleModel")}>
+                Add
+              </Button>
+            </form>
+          </Form>
+          </div>
+      </>
+>>>>>>> Stashed changes
   );
 };
 
