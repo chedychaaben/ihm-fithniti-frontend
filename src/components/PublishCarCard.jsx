@@ -174,19 +174,6 @@ const PublishCarCard = ({cars,setCars}) => {
                 />
               </div>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            <Button type="submit" disabled={!form.watch("vehicleCarrosserie") || !form.watch("vehicleMarque") || !form.watch("vehicleModel")}>
-              Add
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <Toaster position="top-center" />
-    </Card>
-=======
-=======
->>>>>>> Stashed changes
               {!(form.watch("vehicleCarrosserie"))? 
               ""
               :
@@ -275,10 +262,6 @@ const PublishCarCard = ({cars,setCars}) => {
           </Form>
           </div>
       </>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   );
 };
 
