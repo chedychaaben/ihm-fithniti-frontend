@@ -62,7 +62,7 @@ const PublishedRides = () => {
               :
               ""
             }
-          {data?.ridesCreated?.map((ride) => (
+          {data?.ridesCreated?.slice().reverse().map((ride) => (
             <Fragment key={ride._id}>
                 <RideCard creator={user.user} details={ride} withButton={false} />
 
