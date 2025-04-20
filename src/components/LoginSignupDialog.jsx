@@ -38,6 +38,13 @@ const LoginSignupDialog = () => {
       });
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       setLoginData({ email: "", password: "" });
+      toast("Successfully logged in!", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
       if (res.data.isAdmin) {
         navigate("/admin/ListUsers");
       }
@@ -55,7 +62,13 @@ const LoginSignupDialog = () => {
       });
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       setSignupData({ name: "", email: "", password: "" });
-      toast.success("Successfully signed up!");
+      toast("Successfully signed up!", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
     } catch (err) {
       dispatch({ type: "LOGIN_FAILED", payload: err.response.data });
     }

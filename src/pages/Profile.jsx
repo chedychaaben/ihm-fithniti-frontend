@@ -80,7 +80,13 @@ const Profile = () => {
       if (res.ok) {
         // Remove the deleted car from state
         setCars(prevCars => prevCars.filter(car => car._id !== carId));
-        toast.success("Car deleted!")
+        toast("Car deleted!", {
+          style: {
+            background: '#D1FAE5', // light green
+            color: '#065F46',      // dark green text
+            border: '#065F46'
+          },
+        });
       } else {
         console.error("Delete failed:", data.message);
       }
@@ -119,10 +125,22 @@ const Profile = () => {
         { withCredentials: true }
       );
       await refetch();
-      toast.success("Profile updated successfully");
+      toast("Profile updated successfully", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
     } catch (error) {
       console.error("Patch error:", error);
-      toast.error("Failed to update profile");
+      toast("Failed to update profile", {
+        style: {
+          background: '#FEE2E2', // light red
+          color: '#991B1B',      // dark red text
+          border: '#991B1B'
+        },
+      });
     }
   };
 

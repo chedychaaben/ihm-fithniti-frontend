@@ -46,6 +46,7 @@ const PublishCarCard = ({cars,setCars}) => {
         style: {
           background: '#D1FAE5', // light green
           color: '#065F46',      // dark green text
+          border: '#065F46'
         },
       });
       form.reset();
@@ -55,6 +56,7 @@ const PublishCarCard = ({cars,setCars}) => {
         style: {
           background: '#FEE2E2', // light red
           color: '#991B1B',      // dark red text
+          border: '#991B1B'
         },
       });
     }
