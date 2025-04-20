@@ -254,7 +254,7 @@ const PublishCarCard = () => {
           </form>
         </Form>
       </CardContent>
-      <Toaster />
+      <Toaster position="top-center" />
     </Card>
   );
 };

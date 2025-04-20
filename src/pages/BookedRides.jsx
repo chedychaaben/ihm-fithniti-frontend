@@ -81,7 +81,7 @@ const BookedRides = () => {
         </div>
         
       </div>
-      <Toaster />
+      <Toaster position="top-center" />
     </main>
   )
 }

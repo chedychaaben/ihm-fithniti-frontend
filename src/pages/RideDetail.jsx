@@ -149,7 +149,7 @@ const RideDetail = () => {
           </div>
         </div>
       </div>
-      <Toaster />
+      <Toaster position="top-center" />
     </main>
   );
 };

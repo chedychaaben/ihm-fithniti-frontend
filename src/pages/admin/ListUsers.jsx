@@ -135,7 +135,7 @@ const ListUsers = () => {
         </div>
       </div>
 
-      <Toaster />
+      <Toaster position="top-center" />
     </main>
   )
 }

@@ -488,7 +488,7 @@ const PublishCard = () => {
           </form>
         </Form>
       </CardContent>
-      <Toaster />
+      <Toaster position="top-center" />
     </Card>
   )
 }

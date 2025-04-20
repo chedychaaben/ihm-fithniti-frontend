@@ -99,7 +99,7 @@ const PublishedRides = () => {
         </div>
       </div>
 
-      <Toaster />
+      <Toaster position="top-center" />
     </main>
   )
 }
