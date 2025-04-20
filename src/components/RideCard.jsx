@@ -6,15 +6,20 @@ import { Link, useLocation } from 'react-router-dom';
 import { format, formatDistance } from "date-fns";
 import {  useEffect } from 'react';
 import axios from "axios"
+import { toast } from "sonner";
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const RideCard = ({ to, creator, details, pageOrigin }) => {
-  const { origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails, passengers } = details;
+  const { _id, origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails, passengers } = details;
   
   const backendUri = import.meta.env.VITE_REACT_BACKEND_URI
 
   const [passengersData, setPassengersData] = useState([]);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [currentRideId, setCurrentRideId] = useState(null);
+  const [reviewComment, setReviewComment] = useState('');
+  const [reviewRate, setReviewRate] = useState(5);
 
   // Extract the date portion (ignoring time) by formatting them to 'YYYY-MM-DD'
   const startDateString = new Date(startTime).toISOString().split('T')[0]; // 'YYYY-MM-DD'
@@ -82,6 +87,24 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
     }
   };
 
+  async function handleSubmitReview() {
+    try {
+      await axios.post(`${apiUri}/reviews`, {
+        rideId: currentRideId,
+        comment: reviewComment,
+        rate: reviewRate
+      }, { withCredentials: true });
+
+      toast.success("Review submitted successfully!");
+      setIsReviewModalOpen(false);
+      setReviewComment('');
+      setReviewRate(5);
+      setCurrentRideId(null);
+    } catch (error) {
+      console.error("Failed to submit review", error);
+      toast.error("Failed to submit review. Try again!");
+    }
+  }
 
   useEffect(() => {
     fetchPassengersData();
@@ -289,6 +312,59 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
               :
               ""
             }
+
+            {pageOrigin === "booked-rides" ? 
+            <>
+              {isReviewModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h2 className="text-lg font-bold mb-4">Write a Review</h2>
+
+                    <textarea
+                      className="w-full p-2 border rounded mb-4"
+                      placeholder="Your review..."
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                    />
+
+                    <select
+                      className="w-full p-2 border rounded mb-4"
+                      value={reviewRate}
+                      onChange={(e) => setReviewRate(Number(e.target.value))}
+                    >
+                      <option value="1">1 - Poor</option>
+                      <option value="2">2 - Fair</option>
+                      <option value="3">3 - Good</option>
+                      <option value="4">4 - Very Good</option>
+                      <option value="5">5 - Excellent</option>
+                    </select>
+
+                    <div className="flex justify-end gap-2">
+                      <Button variant="outline" onClick={() => setIsReviewModalOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={handleSubmitReview}>
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <Button
+                variant="default"
+                className="mt-2"
+                onClick={() => {
+                  setCurrentRideId(_id);
+                  setIsReviewModalOpen(true);
+                }}
+              >
+                Make Review
+              </Button>
+            </>
+              :
+              ""
+            }
+
           </div>
         </div>
         
