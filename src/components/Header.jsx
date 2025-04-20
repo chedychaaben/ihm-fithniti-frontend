@@ -19,8 +19,13 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    toast("loggedout!");
-  
+    toast("logged out successfully", {
+      style: {
+        background: '#D1FAE5', // light green
+        color: '#065F46',      // dark green text
+        border: '#065F46'
+      },
+    });
     dispatch({ type: 'LOGOUT' });
     navigate("/");
   };

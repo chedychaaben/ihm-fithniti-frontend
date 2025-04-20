@@ -40,7 +40,13 @@ const PublishedRides = () => {
     try {
       await axios.delete(`${apiUri}/rides/${id}`, { withCredentials: true })
       refetch()
-      toast("The ride has been deleted.")
+      toast("The ride has been deleted.", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
     } catch (error) {
       console.error("Error deleting item:", error)
     }
