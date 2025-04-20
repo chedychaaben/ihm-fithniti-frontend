@@ -37,7 +37,7 @@ const OfferSeat = () => {
       <div class="container pt-6 max-w-screen-xl pb-16 mx-auto md:justify-start  flex flex-col md:flex-row items-start lg:items-start ">
         <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
           <ArrowLeft className="h-4 w-4" />
-            Retour
+            Back
         </NavLink>
       </div>
       <h1 className="text-3xl text-center p-5 font-bold"> <span className="text-primary"> Publish </span> a <span className="text-primary"> Ride </span> in Just <span className="text-primary">Minutes</span></h1>

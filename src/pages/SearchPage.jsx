@@ -134,7 +134,7 @@ const SearchPage = () => {
               
               <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
                 <ArrowLeft className="h-4 w-4" />
-                  Retour
+                 Back
               </NavLink>
               <br/>
               {loading && (

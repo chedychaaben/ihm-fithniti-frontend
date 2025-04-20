@@ -44,7 +44,7 @@ const BookedRides = () => {
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
         <ArrowLeft className="h-4 w-4" />
-        Retour
+       Back
       </NavLink>
 
       <div className="flex flex-col sm:flex-row h-full w-full">

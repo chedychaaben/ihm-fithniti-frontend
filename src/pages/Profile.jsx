@@ -153,7 +153,7 @@ const Profile = () => {
         className="flex items-center gap-2 mb-6 hover:text-primary"
       >
         <ArrowLeft className="h-4 w-4" />
-        Retour
+        Back
       </NavLink>
 
       <div className="flex flex-col md:flex-row gap-8 w-full max-w-6xl mx-auto">
