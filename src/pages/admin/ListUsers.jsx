@@ -50,10 +50,22 @@ const ListUsers = () => {
       setUsers(users.map(user => 
         user._id === id ? { ...user, isBanned: true } : user
       ));
-      toast("User has been banned.")
+      toast("User has been banned.", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
     } catch (error) {
       console.error("Error banning user:", error)
-      toast.error("Failed to ban user.")
+      toast("Failed to ban user.", {
+        style: {
+          background: '#FEE2E2', // light red
+          color: '#991B1B',      // dark red text
+          border: '#991B1B'
+        },
+      });
     }
   }
 
@@ -64,10 +76,22 @@ const ListUsers = () => {
       setUsers(users.map(user => 
         user._id === id ? { ...user, isBanned: false } : user
       ));
-      toast("User has been unbanned.")
+      toast("User has been unbanned.", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
     } catch (error) {
       console.error("Error unbanning user:", error)
-      toast.error("Failed to unban user.")
+      toast("Failed to unban user.", {
+        style: {
+          background: '#FEE2E2', // light red
+          color: '#991B1B',      // dark red text
+          border: '#991B1B'
+        },
+      });
     }
   }
 
