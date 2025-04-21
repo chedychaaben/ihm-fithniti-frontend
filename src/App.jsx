@@ -11,6 +11,7 @@ import PublishedRides from './pages/PublishedRides'
 import BookedRides from './pages/BookedRides'
 import ListUsers from './pages/admin/ListUsers'
 import { Toaster } from "@/components/ui/sonner"
+import AdminPublishedRides from "./pages/admin/AdminPublishedRides"
 
 function App() {
 
@@ -26,11 +27,16 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/published-rides" element={<PublishedRides />} />
       <Route path="/booked-rides" element={<BookedRides />} />
+      // Add this route in your router configuration
+{
 
+}
 
 
       {/* Admin */}
       <Route path="/admin/ListUsers" element={<ListUsers />} />
+      <Route path="/admin/AdminPublishedRides" element={<AdminPublishedRides />} />
+
     </Routes>
     <Toaster position="top-center" />
     </>
