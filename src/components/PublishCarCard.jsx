@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ImageUpload from "@/components/ui/image-upload";
 import { Label } from './ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { toast } from "sonner";
@@ -22,6 +23,12 @@ const formSchema = z.object({
 });
 
 const PublishCarCard = ({cars,setCars}) => {
+  const [carImageUrl, setCarImageUrlUrl] = useState('');
+
+  const handleCarImageUpload = (url) => {
+    setCarImageUrlUrl(url);
+  };
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -29,6 +36,7 @@ const PublishCarCard = ({cars,setCars}) => {
       vehicleCarrosserie: "",
       vehicleMarque: "",
       vehicleModel: "",
+      carPicture: "",
     },
   });
 
@@ -38,6 +46,7 @@ const PublishCarCard = ({cars,setCars}) => {
         body: data.vehicleCarrosserie,
         marque: data.vehicleMarque,
         model: data.vehicleModel,
+        carPicture: carImageUrl,
       };
 
       await axios.post(`${apiUri}/cars`, body, { withCredentials: true });
@@ -50,6 +59,11 @@ const PublishCarCard = ({cars,setCars}) => {
         },
       });
       form.reset();
+      setCarImageUrlUrl('');
+      setSelectedCarrosserie(null);
+      setSelectedMarque(null);
+      setSelectedModel(null);
+      setImagePreview(null);
     } catch (error) {
       console.error("POST request failed:", error);
       toast("Failed to add car", {
@@ -127,6 +141,7 @@ const PublishCarCard = ({cars,setCars}) => {
   const [selectedCarrosserie, setSelectedCarrosserie] = useState(null);
   const [selectedMarque, setSelectedMarque] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleSelectCarrosserieChange = (value) => {
     const selectedType = carTypes.find((type) => type.value === value);
@@ -141,6 +156,7 @@ const PublishCarCard = ({cars,setCars}) => {
   const handleSelectModelChange = (value) => {
     setSelectedModel(value);
   };
+
 
   return (
     <>
@@ -246,29 +262,14 @@ const PublishCarCard = ({cars,setCars}) => {
                 </div>
               }
 
-              <div className="space-y-2">
-                <Label>Vehicle Registration</Label>
-                <FormField
-                  control={form.control}
-                  name="carteGrise"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => field.onChange(e.target.files?.[0])}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              
-
               {form.watch("vehicleCarrosserie") && form.watch("vehicleMarque") && form.watch("vehicleModel") && (
+                <div className="space-y-2">
+                  <Label>Vehicle Registration</Label>
+                  <ImageUpload onUploadSuccess={handleCarImageUpload} image="car" />
+                </div>
+              )}
+
+              {form.watch("vehicleCarrosserie") && form.watch("vehicleMarque") && form.watch("vehicleModel") && form.watch("vehicleRegistration") && (
                 <div className="mt-4">
                   <h3 className="text-lg font-semibold">Selected :</h3>
                   <div className="flex flex-col items-center mt-2">
@@ -282,7 +283,12 @@ const PublishCarCard = ({cars,setCars}) => {
                 </div>
               )}
 
-              <Button type="submit" disabled={!form.watch("vehicleCarrosserie") || !form.watch("vehicleMarque") || !form.watch("vehicleModel")}>
+              <Button type="submit" disabled={
+                !form.watch("vehicleCarrosserie") || 
+                !form.watch("vehicleMarque") || 
+                !form.watch("vehicleModel") || 
+                !carImageUrl // <-- fixed here
+              }>
                 Add
               </Button>
             </form>

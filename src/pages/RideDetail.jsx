@@ -356,7 +356,7 @@ const RideDetail = () => {
             <div className="flex flex-col justify-start items-start flex-shrink-0">
               <div className="flex w-full space-x-4 py-8 border-b">
                 <Avatar>
-                  <AvatarImage src={`${backendUri}${data?.creator?.profilePicture}`} />
+                  <AvatarImage src={`${backendUri}/uploads/${data?.creator?.profilePicture}`} />
                   <AvatarFallback className="select-none text-primary text-xl font-bold">{data?.creator?.name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex justify-center items-start flex-col space-y-2">

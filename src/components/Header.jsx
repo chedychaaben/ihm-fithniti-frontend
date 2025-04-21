@@ -9,6 +9,8 @@ import { toast } from "sonner"
 import LoginSignupDialog from "./LoginSignupDialog";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const backendUri = import.meta.env.VITE_REACT_BACKEND_URI
@@ -29,6 +31,21 @@ const Header = () => {
     dispatch({ type: 'LOGOUT' });
     navigate("/");
   };
+
+  const [profileImage, setProfileImage] = useState(null);
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const response = await axios.get(`${apiUri}/users/get-profile-image`, { withCredentials: true });
+        setProfileImage(response.data.profilePicture);  // Assuming response.data is the image URL
+      } catch (error) {
+        console.error('Error fetching profile image:', error);
+      }
+    };
+
+    fetchProfileImage();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background mx-auto flex p-3 lg:px-16 items-center justify-end">
@@ -74,7 +91,7 @@ const Header = () => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>
-              <AvatarImage src={`${backendUri}${user.user?.profilePicture}`} />
+              <AvatarImage src={`${backendUri}/uploads/${profileImage}`} />
               <AvatarFallback className="select-none text-primary text-xl font-bold">{user.user?.name[0]}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

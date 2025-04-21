@@ -1,10 +1,46 @@
 import PublishCard from "@/components/PublishCard"
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, NavLink } from "react-router-dom"
+import { Fragment, useContext, useState, useEffect } from "react";
 import Footer from '@/components/Footer'
+import PublishCarCard from "@/components/PublishCarCard";
 
 const OfferSeat = () => {
   const navigate = useNavigate();
+  const [cars, setCars] = useState([]);
+
+
+  const carTypes = [
+    { label: "City car", value: "citadine", image: "/images/cars/citadine.svg" },
+    { label: "Compact", value: "compacte", image: "/images/cars/compacte.svg" },
+    { label: "Sedan", value: "berline", image: "/images/cars/berline.svg" },
+    { label: "SUV", value: "suv", image: "/images/cars/suv.svg" },
+    { label: "Coupe", value: "coupe", image: "/images/cars/coupe.svg" },
+    { label: "Minivan", value: "monospace", image: "/images/cars/monospace.svg" },
+    { label: "Utility vehicle", value: "utilitaire", image: "/images/cars/utilitaire.svg" },
+    { label: "Pickup", value: "pickup", image: "/images/cars/pickup.svg" },
+    { label: "Convertible", value: "cabriolet", image: "/images/cars/cabriolet.svg" },
+  ];
+
+  const fetchCars = async () => {
+    try {
+      setLoadingCars(true);
+      const res = await fetch(`${apiUri}/cars/getmycars`, {
+        credentials: "include", // since your `useFetch` has `withCredentials: true`
+      });
+      const data = await res.json();
+      setCars(data);
+    } catch (err) {
+      console.error("Failed to fetch cars:", err);
+    } finally {
+      setLoadingCars(false);
+    }
+  };
+
+  const getCarImageByBodyName = (value) => {
+    return carTypes.find((carType) => carType.value === value)?.image;
+  };
+
   const steps = [
     {
       step: 1,
@@ -45,6 +81,12 @@ const OfferSeat = () => {
       
       <div className="pt-6 max-w-screen-xl pb-16 mx-auto md:justify-center flex flex-col md:flex-row items-center lg:items-start gap-10">
         
+
+        <div className="w-full md:w-1/2 lg:w-1/4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
+          <PublishCarCard cars={cars} setCars={setCars}/>
+        </div>
+
+
         <div className="md:w-fit w-fit justify-center mb-10 lg:mb-0">
           <PublishCard />
         </div>

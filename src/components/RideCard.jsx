@@ -244,7 +244,7 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
                         {passengersData.map(user => (
                           <li key={user._id}>
                             <Avatar>
-                              <AvatarImage src={`${backendUri}${user?.profilePicture}`} />
+                              <AvatarImage src={`${backendUri}/uploads/${user?.profilePicture}`} />
                               <AvatarFallback className="select-none text-primary text-xl font-bold">
                                 {user?.name[0]}
                               </AvatarFallback>
@@ -271,7 +271,7 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
         <div className="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-100">
           <div className="flex items-center mb-3 sm:mb-0">
             <Avatar>
-              <AvatarImage src={`${backendUri}${creator?.profilePicture}`} />
+              <AvatarImage src={`${backendUri}/uploads/${creator?.profilePicture}`} />
               <AvatarFallback className="select-none text-primary text-xl font-bold">{creator?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="ml-3">

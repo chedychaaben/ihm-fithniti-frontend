@@ -40,6 +40,23 @@ const Profile = () => {
   const [carToDelete, setCarToDelete] = useState(null)
   const [loadingCars, setLoadingCars] = useState(true);
 
+
+  
+    const [profileImageUrl, setProfileImageUrl] = useState('');
+    const [cinImageUrl, setCinImageUrl] = useState('');
+    const [permisImageUrl, setPermisImageUrl] = useState('');
+  
+    const handleProfileImageUpload = (url) => {
+      setProfileImageUrl(url);
+    };
+    const handleCinImageUpload = (url) => {
+      setCinImageUrl(url);
+    };
+    const handlePermisImageUpload = (url) => {
+      setPermisImageUrl(url);
+    };
+
+
   const carTypes = [
     { label: "City car", value: "citadine", image: "/images/cars/citadine.svg" },
     { label: "Compact", value: "compacte", image: "/images/cars/compacte.svg" },
@@ -107,11 +124,10 @@ const Profile = () => {
       bio: "",
       age: "",
       phoneNumber: "",
+      cinPicture: "",
+      permisPicture: "",
     },
   });
-
-
-
   
 
   const onSubmit = async (newData) => {
@@ -121,6 +137,8 @@ const Profile = () => {
         {
           name: newData.name,
           profile: { ...data?.profile, bio: newData.bio, age: newData.age, phoneNumber: newData.phoneNumber },
+          cinPicture: cinImageUrl,
+          permisPicture: permisImageUrl
         },
         { withCredentials: true }
       );
@@ -132,6 +150,7 @@ const Profile = () => {
           border: '#065F46'
         },
       });
+      window.location.reload()
     } catch (error) {
       console.error("Patch error:", error);
       toast("Failed to update profile", {
@@ -142,7 +161,34 @@ const Profile = () => {
         },
       });
     }
+    
   };
+
+  const handleUpdateProfilePicture = async (e) => {
+    const formData = new FormData();
+    formData.append("fileNameInUploadsFolder", profileImageUrl);
+
+    try {
+      const res = await axios.post(`${apiUri}/users/update-profile-image`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true
+      });
+      console.log("Upload successful:", res.data);
+      window.location.reload();
+      toast("Image Updated !", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        }
+      });
+    } catch (err) {
+      console.error("Update failed:", err);
+    }
+  };
+
 
   const GoBackButton = () => {
     navigate(-1);
@@ -156,6 +202,8 @@ const Profile = () => {
         bio: data.profile?.bio || "",
         age: data.profile.age || "",
         phoneNumber: data.profile.phoneNumber || "",
+        cinPicture: data.cinPicture || "",
+        permisPicture: data.permisPicture || "",
       });
     }
     
@@ -190,21 +238,32 @@ const Profile = () => {
               <>
                 <div className="relative">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src={`${backendUri}${data?.profilePicture}`} />
+                    <AvatarImage src={`${backendUri}/uploads/${data?.profilePicture}`} />
                     <AvatarFallback className="select-none text-primary text-xl font-bold">
                       {data?.name?.[0]}
                     </AvatarFallback>
                   </Avatar>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="absolute -bottom-1 -right-1 bg-background p-1.5 rounded-full shadow-sm border hover:bg-gray-100 transition-colors">
+                      <button className="absolute -bottom-1 -right-1 bg-background p-2 rounded-full shadow-md border border-transparent hover:bg-gray-100 hover:border-gray-300 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary">
                         <Pencil size={16} />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="bg-white rounded-md shadow-lg p-2">
                       <DropdownMenuItem asChild>
-                        <ImageUpload  onSuccess={refetch} image={"profile"}/>
+                        <ImageUpload onUploadSuccess={handleProfileImageUpload} image={"profile"}/>
                       </DropdownMenuItem>
+
+                      {profileImageUrl === '' ? null : (
+                        <DropdownMenuItem asChild>
+                          <Button 
+                            className="w-full text-center py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark focus:ring-2 focus:ring-primary focus:outline-none transition-all duration-200 ease-in-out cursor-pointer"
+                            onClick={(e) => handleUpdateProfilePicture(e)}
+                          >
+                            Save Profile Image
+                          </Button>
+                        </DropdownMenuItem>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -262,7 +321,7 @@ const Profile = () => {
                 <div>
                   <div className="flex flex-wrap gap-4">
                     {cars.map((car, index) => (
-                      <div key={index} className="flex gap-4 items-center justify-center text-gray-800 text-lg font-semibold">
+                      <div key={index} className="flex items-center justify-center text-gray-800 text-lg font-semibold">
                         <img 
                           src={getCarImageByBodyName(car.body)}
                           alt={car.body}
@@ -271,6 +330,17 @@ const Profile = () => {
                         <span>
                           {car.marque} {car.model}
                         </span>
+                        
+                        {car?.carPicture ? 
+                          <img 
+                            src={`${backendUri}/uploads/${car?.carPicture}`}
+                            alt={car?.carPicture}
+                            className="w-12 h-12 object-contain" 
+                          />
+                          :
+                          ""
+                        }
+                        
                         <div className="flex justify-end w-full mt-2">
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -311,7 +381,7 @@ const Profile = () => {
         </div>
 
         {/* Rides Section */}
-        <div className="w-full md:w-1/3 lg:w-1/2 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
+        <div className="w-full bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
           <h2 className="text-xl font-semibold mb-6">Edit Your Profile</h2>
           <div className="grid gap-4">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -376,65 +446,33 @@ const Profile = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="file">Identity Card Picture</Label>
-                <Controller
-                  name="file"
-                  control={control}
-                  render={({ field: { onChange, value, ...rest } }) => (
-                    <div className="flex items-center gap-4">
-                      <input
-                        type="file"
-                        id="file"
-                        onChange={(e) => onChange(e.target.files?.[0])}
-                        className="block w-full text-sm text-gray-500
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border file:border-gray-300
-                          file:text-sm file:font-medium
-                          file:bg-white file:text-gray-700
-                          hover:file:bg-gray-100 hover:file:border-gray-400
-                          transition-colors duration-200
-                        "
-                        {...rest}
-                      />
-                      {value && (
-                        <span className="text-sm text-muted-foreground truncate max-w-[200px]">
-                          {value.name}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                <Label htmlFor="idCard">Identity Card Picture</Label>
+                {data?.cinPicture ?
+                <img
+                  src={`${backendUri}/uploads/${data?.cinPicture}`}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-full border-4 border-emerald-100 shadow-md"
                 />
+                :
+                "No Identity Card"
+                }
+                <ImageUpload onUploadSuccess={handleCinImageUpload} image={"cin"}/>
+                                      
               </div>
 
+
               <div className="space-y-2">
-                <Label htmlFor="file">Driver License Picture</Label>
-                <Controller
-                  name="file"
-                  control={control}
-                  render={({ field: { onChange, value, ...rest } }) => (
-                    <div className="flex items-center gap-4">
-                      <input
-                        type="file"
-                        id="file"
-                        onChange={(e) => onChange(e.target.files?.[0])}
-                        className="block w-full text-sm text-gray-500
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border file:border-gray-300
-                          file:text-sm file:font-medium
-                          file:bg-white file:text-gray-700
-                          hover:file:bg-gray-100 hover:file:border-gray-400
-                          transition-colors duration-200
-                        "
-                        {...rest}
-                      />
-                      {value && (
-                        <span className="text-sm text-muted-foreground truncate max-w-[200px]">
-                          {value.name}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                <Label htmlFor="license">Driver License Picture</Label>
+                {data?.permisPicture ?
+                <img
+                  src={`${backendUri}/uploads/${data?.permisPicture}`}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-full border-4 border-emerald-100 shadow-md"
                 />
+                :
+                "No Driver Licence"
+                } 
+                <ImageUpload onUploadSuccess={handlePermisImageUpload} image={"permis"}/>
               </div>
 
               <div className="space-y-2">
@@ -472,9 +510,6 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 lg:w-1/4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm border">
-          <PublishCarCard cars={cars} setCars={setCars}/>
-        </div>
 
       </div>
 
