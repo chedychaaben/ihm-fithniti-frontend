@@ -24,7 +24,13 @@ const BookedRides = () => {
     try {
       await axios.delete(`${apiUri}/rides/${id}`, { withCredentials: true });
       refetch();
-      toast("The ride has been deleted.");
+      toast("The ride has been cancelled", {
+              style: {
+                background: '#D1FAE5', // light green
+                color: '#065F46',      // dark green text
+                border: '#065F46'
+              },
+      });
     } catch (error) {
       console.error("Error deleting item:", error);
     }
@@ -74,7 +80,13 @@ const BookedRides = () => {
     try {
       await axios.post(`${apiUri}/rides/${ride._id}/leave`, {}, { withCredentials: true });
       refetch();
-      toast.success("Successfully cancelled your participation.");
+      toast("Successfully cancelled your participation.", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+});
     } catch (error) {
       console.error("Error cancelling ride:", error);
       if (error.response && error.response.data?.message) {

@@ -68,10 +68,15 @@ const RideDetail = () => {
       const res = await axios.get(`${apiUri}/rides/${rideId}/join`, { withCredentials: true });
   
       if (res.status === 200) {
-        toast.success("Successfully booked the ride!", {
+        toast("Successfully booked the ride!", {
           description: format(new Date(), "PPp"),
+          style: {
+            background: '#D1FAE5', // light green
+            color: '#065F46',      // dark green text
+            border: '#065F46'
+          },
         });
-      }
+        }
     } catch (err) {
       console.error(err);
       toast.warning(
