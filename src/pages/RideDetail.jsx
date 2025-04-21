@@ -15,6 +15,11 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { NavLink, useNavigate} from "react-router-dom"
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
+//import { Form, FormControl, FormField, FormItem } from "./ui/form";
+//import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+
+
+
 
 
 import tunisImg from "@/assets/cities/tunis.jpg";
@@ -45,6 +50,7 @@ import kebiliImg from "@/assets/cities/kebili.jpg";
 import defaultImg from "@/assets/cities/default.jpg";
 
 
+
 const apiUri = import.meta.env.VITE_REACT_API_URI
 const backendUri = import.meta.env.VITE_REACT_BACKEND_URI
 
@@ -56,27 +62,28 @@ const RideDetail = () => {
   
   const { rideId } = useParams();
   const { loading, data, error } = useFetch(`rides/${rideId}`);
-
+  
   const handleBook = async () => {
     try {
       const res = await axios.get(`${apiUri}/rides/${rideId}/join`, { withCredentials: true });
   
-      // Log the response to see what is returned (you might need to check the status code or data)
-  
-      if (res.status === 200) {  // Check for 200 or another expected status
+      if (res.status === 200) {
         toast.success("Successfully booked the ride!", {
           description: format(new Date(), "PPp"),
         });
-      } else {
-        toast.warning("Failed to book the ride. Unexpected status code.");
       }
-  
     } catch (err) {
       console.error(err);
-      toast.warning(err?.response?.data?.message || err.message || "An error occurred while booking.");
+      toast.warning(
+        (typeof err?.response?.data === 'string' && err?.response?.data) || 
+        err?.response?.data?.message || 
+        err.message || 
+        "An error occurred while booking."
+      );
     }
   };
-  
+
+
   const GoBackButton = () => {
     navigate(-1);
   };
@@ -306,42 +313,42 @@ const RideDetail = () => {
               Total Price for 1 Passenger: {data?.price ? `${data.price} TND` : "N/A"} {/* Fallback to N/A if price is not available */}
             </p>
           </div>
-          
-          
+
+
           <div>
-          {
-            !user ? (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button>Book Ride</Button>
-                </DialogTrigger>
-                <LoginSignupDialog />
-              </Dialog>
-            ) : (
-              <>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button>Book Ride</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Confirm your booking</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Are you sure to confirm your ride? This action will finalize your participation in the shared journey.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleBook}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </>
-            )
-          }
-
-
+            {
+                  !user ? (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button>Book Ride</Button>
+                      </DialogTrigger>
+                      <LoginSignupDialog />
+                    </Dialog>
+                  ) : (
+                    <>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button>Book Ride</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Confirm your booking</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure to confirm your ride? This action will finalize your participation in the shared journey.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleBook}>Continue</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </>
+                  )
+            }
           </div>
+
+
         </div>
         <div className="w-full sm:w-96 flex p-0 py-6 md:p-6 xl:p-8 flex-col">
           <h3 className="text-xl font-semibold leading-5">Driver Details</h3>
