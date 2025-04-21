@@ -86,7 +86,7 @@ const BookedRides = () => {
           color: '#065F46',      // dark green text
           border: '#065F46'
         },
-});
+      });
     } catch (error) {
       console.error("Error cancelling ride:", error);
       if (error.response && error.response.data?.message) {

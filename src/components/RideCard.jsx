@@ -50,6 +50,7 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
 
 
   const [borderColor, setBorderColor] = useState("border-gray-200");
+  const [profileImage, setProfileImage] = useState(null);
 
   
   const carTypes = [
@@ -106,10 +107,19 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
     }
   }
 
+  const fetchProfileImage = async (id) => {
+    try {
+      const response = await axios.get(`${apiUri}/users/get-profile-image/${id}`);
+      setProfileImage(response.data.profilePicture);
+    } catch (error) {
+      console.error('Error fetching profile image:', error);
+    }
+  };
+
   useEffect(() => {
+    fetchProfileImage(creator._id);
     fetchPassengersData();
   }, []);
-  
   return (
     <Link
         to={disabled ? '#' : to}
@@ -271,7 +281,7 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
         <div className="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-100">
           <div className="flex items-center mb-3 sm:mb-0">
             <Avatar>
-              <AvatarImage src={`${backendUri}/uploads/${creator?.profilePicture}`} />
+              <AvatarImage src={`${backendUri}/uploads/${profileImage}`} />
               <AvatarFallback className="select-none text-primary text-xl font-bold">{creator?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="ml-3">

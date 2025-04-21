@@ -37,7 +37,7 @@ const Header = () => {
   useEffect(() => {
     const fetchProfileImage = async () => {
       try {
-        const response = await axios.get(`${apiUri}/users/get-profile-image`, { withCredentials: true });
+        const response = await axios.get(`${apiUri}/users/get-profile-image/${user.user._id}`);
         setProfileImage(response.data.profilePicture);  // Assuming response.data is the image URL
       } catch (error) {
         console.error('Error fetching profile image:', error);
