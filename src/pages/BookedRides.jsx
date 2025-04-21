@@ -58,11 +58,51 @@ const BookedRides = () => {
             <h3>No rides</h3>
           ) : (
             <>
-              {paginatedRides.map((ride) => (
-                <Fragment key={ride._id}>
-                  <RideCard creator={user.user} details={ride} pageOrigin={"booked-rides"} />
-                </Fragment>
-              ))}
+          {paginatedRides.map((ride) => {
+  const startTime = new Date(ride.startTime);
+  const now = new Date();
+  const nineHoursBeforeStart = new Date(startTime.getTime() - 9 * 60 * 60 * 1000); // 9h before
+
+  const canCancel = now < nineHoursBeforeStart;
+
+  const handleCancel = async () => {
+    if (!canCancel) {
+      toast.error("You can't cancel this ride because it's too close to departure time.");
+      return;
+    }
+  
+    try {
+      await axios.post(`${apiUri}/rides/${ride._id}/leave`, {}, { withCredentials: true });
+      refetch();
+      toast.success("Successfully cancelled your participation.");
+    } catch (error) {
+      console.error("Error cancelling ride:", error);
+      if (error.response && error.response.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Failed to cancel the ride.");
+      }
+    }
+  };
+  
+
+  return (
+    <Fragment key={ride._id}>
+      <RideCard creator={user.user} details={ride} pageOrigin={"booked-rides"} />
+
+      <div className="flex justify-end w-full mt-2">
+        <Button
+          variant="destructive"
+          onClick={handleCancel}
+          disabled={!canCancel}
+        >
+          Cancel Ride
+        </Button>
+      </div>
+    </Fragment>
+  );
+})}
+
 
               {/* Pagination Controls */}
               <div className="flex justify-center items-center gap-2 mt-6">
