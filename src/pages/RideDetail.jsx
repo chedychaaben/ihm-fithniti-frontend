@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner"
 import useFetch from "@/hooks/useFetch"
 import { MoveDown, MoveRight, Star, ArrowLeft } from "lucide-react"
 import LoginSignupDialog from "../components/LoginSignupDialog";
+import { Link, useLocation } from 'react-router-dom';
 import { useParams } from "react-router-dom"
 import { toast } from "sonner"
 import { format, formatDistance } from "date-fns";
@@ -363,35 +364,43 @@ const RideDetail = () => {
           <h3 className="text-xl font-semibold leading-5">Driver Details</h3>
           <div className="flex flex-col justify-start items-stretch h-full w-full">
             <div className="flex flex-col justify-start items-start flex-shrink-0">
-              <div className="flex w-full space-x-4 py-8 border-b">
-                <Avatar>
-                  <AvatarImage src={`${backendUri}/uploads/${data?.creator?.profilePicture}`} />
-                  <AvatarFallback className="select-none text-primary text-xl font-bold">{data?.creator?.name[0]}</AvatarFallback>
-                </Avatar>
-                <div className="flex justify-center items-start flex-col space-y-2">
-                  <p className="text-base font-semibold leading-4 text-left">{data?.creator.name}</p>
-                  <div className="flex items-center text-sm gap-1 text-muted-foreground">
-                    { data?.creator?.stars == null || data?.creator?.stars == 0 
-                        ?
-                        ""
-                        :
-                        <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
-                            {[...Array(5)].map((_, i) => (
-                              <svg
-                                key={i}
-                                className={`w-4 h-4 ${i < data?.creator.stars ? "text-yellow-500" : "text-gray-300"}`}
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            ))}
-                          <span className="text-sm font-medium text-gray-700">{data?.creator.stars}/5</span>
-                        </div>
-                      }
+                <div className="flex w-full space-x-4 py-8 border-b">
+                  <div>
+                    <Avatar>
+                      <AvatarImage src={`${backendUri}/uploads/${data?.creator?.profilePicture}`} />
+                      <AvatarFallback className="select-none text-primary text-xl font-bold">{data?.creator?.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex justify-center items-start flex-col space-y-2">
+                      <p className="text-base font-semibold leading-4 text-left">{data?.creator.name}</p>
+                      <div className="flex items-center text-sm gap-1 text-muted-foreground">
+                        { data?.creator?.stars == null || data?.creator?.stars == 0 
+                            ?
+                            ""
+                            :
+                            <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
+                                {[...Array(5)].map((_, i) => (
+                                  <svg
+                                    key={i}
+                                    className={`w-4 h-4 ${i < data?.creator.stars ? "text-yellow-500" : "text-gray-300"}`}
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                  </svg>
+                                ))}
+                              <span className="text-sm font-medium text-gray-700">{data?.creator.stars}/5</span>
+                            </div>
+                          }
+                      </div>
+                      
+                      
+                      <Link to={`/driver-profile/${data?.creator?._id}`}>Visit Driver Profile</Link>
+
+
                   </div>
+
                 </div>
-              </div>
+                </div>
               
               <div className="flex justify-center items-start flex-col space-y-4 mt-8">
                 <p className="text-base font-semibold leading-4 text-center md:text-left">About the Driver</p>

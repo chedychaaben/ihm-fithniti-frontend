@@ -9,6 +9,7 @@ import RideDetail from './pages/RideDetail'
 import Profile from './pages/Profile'
 import PublishedRides from './pages/PublishedRides'
 import BookedRides from './pages/BookedRides'
+import DriverProfile from './pages/DriverProfile'
 import ListUsers from './pages/admin/ListUsers'
 import { Toaster } from "@/components/ui/sonner"
 import AdminPublishedRides from "./pages/admin/AdminPublishedRides"
@@ -27,7 +28,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/published-rides" element={<PublishedRides />} />
       <Route path="/booked-rides" element={<BookedRides />} />
-      // Add this route in your router configuration
+      <Route path="/driver-profile/:driverId" element={<DriverProfile />} />
 {
 
 }
