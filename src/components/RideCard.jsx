@@ -276,7 +276,6 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
             </Avatar>
             <div className="ml-3">
               <p className="font-medium text-gray-800">{creator.name}</p>
-              <p className="text-xs text-gray-500">{creator.profile.bio}</p>
               { creator?.stars == null || creator?.stars == 0 || pageOrigin === "published-rides"
                 ?
                 ""
