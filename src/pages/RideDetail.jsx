@@ -1,6 +1,7 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
 import { Toaster } from "@/components/ui/sonner"
 import useFetch from "@/hooks/useFetch"
@@ -59,7 +60,8 @@ const RideDetail = () => {
   
   const {user, dispatch} = useContext(AuthContext)
   const navigate = useNavigate();
-  
+
+
   const { rideId } = useParams();
   const { loading, data, error } = useFetch(`rides/${rideId}`);
   
@@ -177,6 +179,8 @@ const RideDetail = () => {
   const getCarImageByBodyName = (value) => {
     return carTypes.find((carType) => carType.value === value)?.image;
   };
+
+
   return (
     <main className="pb-12 md:py-14 px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <NavLink onClick={GoBackButton} className="flex items-center gap-2 mr-5 hover:text-primary">
