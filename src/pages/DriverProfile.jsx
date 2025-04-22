@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from 'react-router-dom';
 import { Pencil, Star, Trash, ArrowLeft } from "lucide-react";
 import { Navigate, useNavigate, NavLink } from "react-router-dom";
+import Review from "@/components/Review";
 
 const apiUri = import.meta.env.VITE_REACT_API_URI;
 const backendUri = import.meta.env.VITE_REACT_BACKEND_URI;
@@ -107,47 +108,13 @@ const DriverProfile = () => {
         </div>
 
         {/* Reviews Section */}
+              {reviewData?.reviews?.length}
         {reviewData?.reviews?.length > 0 && (
           <div className="w-full max-w-2xl mt-10 space-y-6">
             <h3 className="text-lg font-semibold">Reviews</h3>
             <div className="space-y-4">
               {reviewData.reviews.map((review) => (
-                <div
-                  key={review._id}
-                  className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border shadow-sm space-y-2"
-                >
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={`${backendUri}/uploads/${review?.user?.profilePicture}`} />
-                      <AvatarFallback className="text-xs">{review?.user?.name}</AvatarFallback>
-                    </Avatar>
-                    <p className="text-sm font-medium">{review?.user?.name}</p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={14}
-                          className={i < review.rate ? "fill-yellow-500 text-yellow-500" : "text-gray-300"}
-                        />
-                      ))}
-                      <span className="text-sm text-gray-600 dark:text-gray-300">{review.rate}/5</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(review.date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-
-                  <p className="text-sm text-gray-800 dark:text-gray-100">
-                    {review.comment || <em className="text-muted-foreground">No comment left</em>}
-                  </p>
-                </div>
+                <Review review={review} />
               ))}
             </div>
           </div>
