@@ -9,10 +9,13 @@ import { Star } from "lucide-react";
 import {  useEffect } from 'react';
 import axios from "axios"
 import { toast } from "sonner";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
 const RideCard = ({ to, details, pageOrigin }) => {
+  const {user, dispatch} = useContext(AuthContext)
   const { _id, origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails, passengers, creator } = details;
   const creatorId = creator;
   const { loading: userLoading, data: userData, refetch: userRefetch } = useFetch(`users/${creatorId}`);
@@ -95,7 +98,8 @@ const RideCard = ({ to, details, pageOrigin }) => {
   async function handleSubmitReview() {
     try {
       await axios.post(`${apiUri}/reviews`, {
-        creatorOfReview: creatorId,
+        reviewOwner: user.user._id,
+        reviewer: creatorId,
         rideId: currentRideId,
         comment: reviewComment,
         rate: reviewRate
