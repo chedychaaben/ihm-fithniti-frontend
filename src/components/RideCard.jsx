@@ -12,14 +12,17 @@ import { toast } from "sonner";
 
 const apiUri = import.meta.env.VITE_REACT_API_URI
 
-const RideCard = ({ to, creator, details, pageOrigin }) => {
-  const { _id, origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails, passengers } = details;
-  const { loading: reviewLoading, data: reviewData, error, refetch: reviewRefetch } = useFetch(`reviews/user/${creator._id}`);
+const RideCard = ({ to, details, pageOrigin }) => {
+  const { _id, origin, destination, availableSeats, startTime, endTime, price, maxTwoPassengersInBackSeats, smokingAllowed, heavyLuggage, petsAllowed, airConditioning, vehicleDetails, passengers, creator } = details;
+  const creatorId = creator;
+  const { loading: userLoading, data: userData, refetch: userRefetch } = useFetch(`users/${creatorId}`);
+  const { loading: reviewLoading, data: reviewData, error, refetch: reviewRefetch } = useFetch(`reviews/user/${creatorId}`);
   const backendUri = import.meta.env.VITE_REACT_BACKEND_URI
 
   const [passengersData, setPassengersData] = useState([]);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [currentRideId, setCurrentRideId] = useState(null);
+  
   const [reviewComment, setReviewComment] = useState('');
   const [reviewRate, setReviewRate] = useState(5);
 
@@ -52,7 +55,6 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
 
 
   const [borderColor, setBorderColor] = useState("border-gray-200");
-  const [profileImage, setProfileImage] = useState(null);
 
   
   const carTypes = [
@@ -93,12 +95,18 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
   async function handleSubmitReview() {
     try {
       await axios.post(`${apiUri}/reviews`, {
+        creatorOfReview: creatorId,
         rideId: currentRideId,
         comment: reviewComment,
         rate: reviewRate
       }, { withCredentials: true });
-
-      toast.success("Review submitted successfully!");
+      toast("Review submitted successfully!", {
+        style: {
+          background: '#D1FAE5', // light green
+          color: '#065F46',      // dark green text
+          border: '#065F46'
+        },
+      });
       setIsReviewModalOpen(false);
       setReviewComment('');
       setReviewRate(5);
@@ -109,17 +117,8 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
     }
   }
 
-  const fetchProfileImage = async (id) => {
-    try {
-      const response = await axios.get(`${apiUri}/users/get-profile-image/${id}`);
-      setProfileImage(response.data.profilePicture);
-    } catch (error) {
-      console.error('Error fetching profile image:', error);
-    }
-  };
 
   useEffect(() => {
-    fetchProfileImage(creator._id);
     fetchPassengersData();
   }, []);
   return (
@@ -283,11 +282,11 @@ const RideCard = ({ to, creator, details, pageOrigin }) => {
         <div className="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-100">
           <div className="flex items-center mb-3 sm:mb-0">
             <Avatar>
-              <AvatarImage src={`${backendUri}/uploads/${profileImage}`} />
-              <AvatarFallback className="select-none text-primary text-xl font-bold">{creator?.name[0]}</AvatarFallback>
+              <AvatarImage src={`${backendUri}/uploads/${userData?.profilePicture}`} />
+              <AvatarFallback className="select-none text-primary text-xl font-bold">{userData?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="ml-3">
-              <p className="font-medium text-gray-800">{creator.name}</p>
+              <p className="font-medium text-gray-800">{userData?.name}</p>
                 {reviewData?.score > 0 && (
                   <div className="flex items-center justify-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1 rounded-full mt-2">
                     {[...Array(5)].map((_, i) => (

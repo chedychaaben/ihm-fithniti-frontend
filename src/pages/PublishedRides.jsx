@@ -77,7 +77,7 @@ const PublishedRides = () => {
             <>
               {paginatedRides.map((ride) => (
                 <Fragment key={ride._id}>
-                  <RideCard creator={user.user} details={ride} pageOrigin={"published-rides"} />
+                  <RideCard details={ride} pageOrigin={"published-rides"} />
                   <div className="flex justify-end w-full mt-2">
                     <AlertDialog>
                       <AlertDialogTrigger asChild>

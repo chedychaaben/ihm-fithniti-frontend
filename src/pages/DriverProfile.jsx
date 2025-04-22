@@ -119,9 +119,9 @@ const DriverProfile = () => {
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={`${backendUri}/uploads/${review?.user?.profilePicture}`} />
-                      <AvatarFallback className="text-xs">{review.user.name[0]}</AvatarFallback>
+                      <AvatarFallback className="text-xs">{review?.user?.name}</AvatarFallback>
                     </Avatar>
-                    <p className="text-sm font-medium">{review.user.name}</p>
+                    <p className="text-sm font-medium">{review?.user?.name}</p>
                   </div>
 
                   <div className="flex items-center justify-between">

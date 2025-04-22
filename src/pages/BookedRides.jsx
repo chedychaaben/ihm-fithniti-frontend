@@ -20,23 +20,6 @@ const BookedRides = () => {
 
   const { loading, data, refetch } = useFetch(`users/${user.user._id}`, true);
 
-  async function handleDelete(id) {
-    try {
-      await axios.delete(`${apiUri}/rides/${id}`, { withCredentials: true });
-      refetch();
-      toast("The ride has been cancelled", {
-              style: {
-                background: '#D1FAE5', // light green
-                color: '#065F46',      // dark green text
-                border: '#065F46'
-              },
-      });
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
-  }
-
-
   const GoBackButton = () => {
     navigate(-1);
   }
@@ -100,7 +83,7 @@ const BookedRides = () => {
 
   return (
     <Fragment key={ride._id}>
-      <RideCard creator={user.user} details={ride} pageOrigin={"booked-rides"} />
+      <RideCard details={ride} pageOrigin={"booked-rides"} />
 
       <div className="flex justify-end w-full mt-2">
         <Button

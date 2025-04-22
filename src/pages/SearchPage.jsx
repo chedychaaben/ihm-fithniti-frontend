@@ -81,7 +81,7 @@ const SearchPage = () => {
     if (data?.rides) {
       setFilteredData(data.rides.filter((ride) => {
         // Only filter out rides where the creator._id is equal to currentUserId if currentUserId exists
-        return currentUserId ? ride.creator._id !== currentUserId : true;
+        return currentUserId ? ride.creator !== currentUserId : true;
       }));
     }
   }, [data, currentUserId]);  // Add currentUserId to the dependency array
@@ -159,7 +159,7 @@ const SearchPage = () => {
                       </div>
                       <br />
                       {filteredData.map((ride) => (
-                          <RideCard to={`/ride/${ride._id}`} creator={ride.creator} details={ride} pageOrigin={"search"} />
+                        <RideCard to={`/ride/${ride._id}`} details={ride} pageOrigin={"search"} />
                       ))}
                     </>
                   )}
